@@ -1,8 +1,12 @@
 import axios from 'axios';
 
 import {
-  LOGIN_USER,
-  REGISTER_USER,
+  LOGIN_PENDING,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  REGISTER_PENDING,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
   IS_AUTH,
 } from './types';
 
