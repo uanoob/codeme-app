@@ -1,25 +1,25 @@
 import axios from 'axios';
 
 import {
-  GET_USERS,
-  GET_USER_BY_ID,
+  LOGIN_USER,
+  REGISTER_USER,
   IS_AUTH,
 } from './types';
 
-export const getClients = () => async dispatch => {
+export const loginUser = () => async dispatch => {
   const response = await axios.get(
     'https://incode-app.firebaseio.com/data.json',
   );
   dispatch({
-    type: GET_USERS,
+    type: LOGIN_USER,
     payload: response.data,
   });
 };
 
-export const getClientById = (clients, id) => {
+export const registerUser = (clients, id) => {
   const result = clients.find(client => client.contact.phone === id);
   return {
-    type: GET_USER_BY_ID,
+    type: REGISTER_USER,
     payload: result,
   };
 };

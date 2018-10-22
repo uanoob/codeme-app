@@ -1,5 +1,5 @@
 export {
-  getUsers,
-  getUserById,
+  loginUser,
+  registerUser,
   isAuth,
 } from './usersActions';

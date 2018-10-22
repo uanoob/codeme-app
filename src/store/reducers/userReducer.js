@@ -1,6 +1,6 @@
 import {
-  GET_USERS,
-  GET_USER_BY_ID,
+  LOGIN_USER,
+  REGISTER_USER,
   IS_AUTH,
 } from '../actions/types';
 
@@ -11,9 +11,9 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_USERS:
+    case LOGIN_USER:
       return { ...state, data: action.payload };
-    case GET_USER_BY_ID:
+    case REGISTER_USER:
       return { ...state, client: action.payload };
     case IS_AUTH:
       return { ...state, filter: action.payload };
