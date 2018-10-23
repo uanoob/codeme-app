@@ -1,23 +1,26 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import {
   signup,
   isNameValid,
   isEmailValid,
   isPasswordValid
-} from "../store/actions";
-import { checkValidity } from "../utils/utility";
+} from '../store/actions';
+import { checkValidity } from '../utils/utility';
 
 const styles = theme => ({
   container: {
-    display: "flex",
-    flexWrap: "wrap"
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    margin: 'auto',
+    width: 300
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -45,9 +48,9 @@ const styles = theme => ({
 
 export class RegisterUser extends Component {
   state = {
-    name: "",
-    email: "",
-    password: ""
+    name: '',
+    email: '',
+    password: ''
   };
 
   handleChangeName = e => {
@@ -120,7 +123,7 @@ export class RegisterUser extends Component {
         <Button
           type="submit"
           variant="contained"
-          color="primary"
+          color="secondary"
           className={classes.button}
         >
           Signup

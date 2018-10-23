@@ -1,21 +1,25 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { auth, isEmailValid, isPasswordValid } from "../store/actions";
-import { checkValidity } from "../utils/utility";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import { auth, isEmailValid, isPasswordValid } from '../store/actions';
+import { checkValidity } from '../utils/utility';
 
 const styles = theme => ({
   container: {
-    display: "flex",
-    flexWrap: "wrap"
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    margin: 'auto',
+    width: 300
   },
   textField: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.auto,
     marginRight: theme.spacing.unit
   },
   dense: {
@@ -28,8 +32,8 @@ const styles = theme => ({
 
 export class LoginUser extends Component {
   state = {
-    email: "",
-    password: ""
+    email: '',
+    password: ''
   };
 
   handleChangeEmail = e => {
@@ -68,8 +72,9 @@ export class LoginUser extends Component {
           className={classes.textField}
           type="email"
           name="email"
+          value={this.state.email}
           onChange={this.handleChangeEmail}
-          autoComplete="email"
+          autoComplete="on"
           margin="normal"
           variant="outlined"
         />
@@ -79,18 +84,28 @@ export class LoginUser extends Component {
           className={classes.textField}
           type="password"
           onChange={this.handleChangePassword}
-          autoComplete="current-password"
+          autoComplete="on"
           margin="normal"
           variant="outlined"
         />
         <Button
           type="submit"
           variant="contained"
-          color="primary"
+          color="secondary"
           className={classes.button}
         >
           Login
         </Button>
+        <div align="center">
+          <span>Not registered?</span>
+          <span>
+            <Link to="/register">
+              <Button size="small" color="primary">
+                SignUp Now!
+              </Button>
+            </Link>
+          </span>
+        </div>
       </form>
     );
   }
