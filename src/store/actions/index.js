@@ -1,5 +1,8 @@
 export {
-  loginUser,
-  registerUser,
-  isAuth,
-} from './usersActions';
+  authStart,
+  authSuccess,
+  authFail,
+  auth,
+  logout,
+  authCheckState
+} from "./auth";
