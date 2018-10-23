@@ -1,4 +1,7 @@
 import {
+  IS_NAME_VALID,
+  IS_EMAIL_VALID,
+  IS_PASSWORD_VALID,
   AUTH_START,
   AUTH_SUCCESS,
   AUTH_FAIL,
@@ -9,13 +12,36 @@ import {
 } from "../actions/types";
 
 const initialState = {
+  nameValid: false,
+  emailValid: false,
+  passwordValid: false,
   token: null,
-  userId: null,
+  isLogined: false,
+  loading: false,
+  loaded: false,
   error: null
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case IS_NAME_VALID:
+      return {
+        ...state,
+        nameValid: action.payload,
+        error: null
+      };
+    case IS_EMAIL_VALID:
+      return {
+        ...state,
+        emailValid: action.payload,
+        error: null
+      };
+    case IS_PASSWORD_VALID:
+      return {
+        ...state,
+        passwordValid: action.payload,
+        error: null
+      };
     case AUTH_START:
       return {
         ...state,
@@ -24,8 +50,8 @@ export default function(state = initialState, action) {
     case AUTH_SUCCESS:
       return {
         ...state,
-        token: action.idToken,
-        userId: action.userId,
+        token: action.token,
+        isLogined: true,
         error: null
       };
     case AUTH_FAIL:
@@ -37,7 +63,24 @@ export default function(state = initialState, action) {
       return {
         ...state,
         token: null,
-        userId: null
+        isLogined: false
+      };
+    case SIGNUP_START:
+      return {
+        ...state,
+        error: null
+      };
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        token: action.token,
+        isLogined: true,
+        error: null
+      };
+    case SIGNUP_FAIL:
+      return {
+        ...state,
+        error: action.error
       };
     default:
       return state;

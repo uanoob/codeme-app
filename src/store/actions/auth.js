@@ -1,6 +1,9 @@
 import axios from "axios";
 
 import {
+  IS_NAME_VALID,
+  IS_EMAIL_VALID,
+  IS_PASSWORD_VALID,
   AUTH_START,
   AUTH_SUCCESS,
   AUTH_FAIL,
@@ -11,17 +14,37 @@ import {
   IS_AUTH
 } from "./types";
 
+export const isNameValid = bool => {
+  return {
+    type: IS_NAME_VALID,
+    bool
+  };
+};
+
+export const isEmailValid = bool => {
+  return {
+    type: IS_EMAIL_VALID,
+    bool
+  };
+};
+
+export const isPasswordValid = bool => {
+  return {
+    type: IS_PASSWORD_VALID,
+    bool
+  };
+};
+
 export const authStart = () => {
   return {
     type: AUTH_START
   };
 };
 
-export const authSuccess = (token, userId) => {
+export const authSuccess = (token) => {
   return {
     type: AUTH_SUCCESS,
-    idToken: token,
-    userId: userId
+    token,
   };
 };
 
@@ -34,7 +57,6 @@ export const authFail = error => {
 
 export const logout = () => {
   localStorage.removeItem("token");
-  localStorage.removeItem("userId");
   return {
     type: AUTH_LOGOUT
   };
@@ -44,22 +66,65 @@ export const auth = (email, password) => {
   return dispatch => {
     dispatch(authStart());
     const authData = {
-      email: email,
-      password: password
+      email,
+      password,
     };
-    let url = "http://localhost:8000/users/authenticate";
+    let url =
+      'http://localhost:8000/api/auth/login';
     axios
       .post(url, authData)
       .then(response => {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.user._id);
-        dispatch(authSuccess(response.data.token, response.data.user._id));
+        localStorage.setItem('token', response.data.token);
+        dispatch(authSuccess(response.data.token));
       })
       .catch(err => {
         dispatch(authFail(err.response.data.error));
       });
   };
 };
+
+export const signupStart = () => {
+  return {
+    type: SIGNUP_START
+  };
+};
+
+export const signupSuccess = (token) => {
+  return {
+    type: SIGNUP_SUCCESS,
+    token,
+  };
+};
+
+export const signupFail = error => {
+  return {
+    type: SIGNUP_FAIL,
+    error: error
+  };
+};
+
+export const signup = (name, email, password) => {
+  return dispatch => {
+    dispatch(signupStart());
+    const signupData = {
+      name,
+      email,
+      password,
+    };
+    let url =
+      'http://localhost:8000/api/auth/register';
+    axios
+      .post(url, signupData)
+      .then(response => {
+        localStorage.setItem('token', response.data.token);
+        dispatch(signupSuccess(response.data.token));
+      })
+      .catch(err => {
+        dispatch(signupFail(err.response.data.error));
+      });
+  };
+};
+
 
 export const authCheckState = () => {
   return dispatch => {

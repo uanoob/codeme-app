@@ -6,7 +6,8 @@ import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { auth } from "../store/actions";
+import { auth, isEmailValid, isPasswordValid } from "../store/actions";
+import { checkValidity } from "../utils/utility";
 
 const styles = theme => ({
   container: {
@@ -27,19 +28,28 @@ const styles = theme => ({
 
 export class LoginUser extends Component {
   state = {
-    email: "Email",
-    password: "Password"
+    email: "",
+    password: ""
   };
 
-  handleChange = name => event => {
+  handleChangeEmail = e => {
+    this.props.onValidEmail(checkValidity(e.target.value));
     this.setState({
-      [name]: event.target.value
+      email: e.target.value
     });
   };
 
-  submitHandler = event => {
-    event.preventDefault();
-    this.props.onAuth(this.state.email.value, this.state.password.value);
+  handleChangePassword = e => {
+    this.props.onValidPassword(checkValidity(e.target.value));
+    this.setState({
+      password: e.target.value
+    });
+    console.log(this.state);
+  };
+
+  submitHandler = e => {
+    e.preventDefault();
+    this.props.onAuth(this.state.email, this.state.password);
   };
 
   render() {
@@ -58,7 +68,7 @@ export class LoginUser extends Component {
           className={classes.textField}
           type="email"
           name="email"
-          onChange={this.handleChange("email")}
+          onChange={this.handleChangeEmail}
           autoComplete="email"
           margin="normal"
           variant="outlined"
@@ -68,7 +78,7 @@ export class LoginUser extends Component {
           label="Password"
           className={classes.textField}
           type="password"
-          onChange={this.handleChange("password")}
+          onChange={this.handleChangePassword}
           autoComplete="current-password"
           margin="normal"
           variant="outlined"
@@ -90,12 +100,12 @@ LoginUser.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-// export default withStyles(styles)(LoginUser);
-
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {
-  onAuth: auth
+  onAuth: auth,
+  onValidEmail: isEmailValid,
+  onValidPassword: isPasswordValid
 };
 
 export default connect(
