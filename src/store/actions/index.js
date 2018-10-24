@@ -12,4 +12,6 @@ export {
   signupFail,
   signup,
   authCheckState
-} from "./auth";
+} from './auth';
+
+export { getUserProfile } from './user';
