@@ -7,7 +7,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -31,19 +30,13 @@ const styles = {
 
 class MenuAppBar extends React.Component {
   state = {
-    auth: false,
-    anchorEl: null,
-    redirect: false
+    anchorEl: null
   };
 
   componentDidMount() {
     const { onAuthCheckState } = this.props;
     onAuthCheckState();
   }
-
-  // handleChange = event => {
-  //   this.setState({ auth: event.target.checked });
-  // };
 
   onHandleLogout = event => {
     this.props.onLogout();
@@ -111,7 +104,6 @@ class MenuAppBar extends React.Component {
                   <Link to="/profile">
                     <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                   </Link>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
                 </Menu>
               </div>
             )}

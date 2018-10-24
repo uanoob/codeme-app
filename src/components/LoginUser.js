@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import classNames from 'classnames';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-// import MenuItem from "@material-ui/core/MenuItem";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { auth, isEmailValid, isPasswordValid } from '../store/actions';
@@ -33,7 +30,6 @@ const styles = theme => ({
 
 export class LoginUser extends Component {
   state = {
-    redirect: false,
     email: '',
     password: '',
     touchedEmail: false,
@@ -41,7 +37,8 @@ export class LoginUser extends Component {
   };
 
   handleChangeEmail = e => {
-    this.props.onValidEmail(checkValidity(e.target.value));
+    const { onValidEmail } = this.props;
+    onValidEmail(checkValidity(e.target.value));
     this.setState({
       touchedEmail: true,
       email: e.target.value
@@ -49,34 +46,30 @@ export class LoginUser extends Component {
   };
 
   handleChangePassword = e => {
-    this.props.onValidPassword(checkValidity(e.target.value));
+    const { onValidPassword } = this.props;
+    onValidPassword(checkValidity(e.target.value));
     this.setState({
       touchedPassword: true,
       password: e.target.value
     });
-    // console.log(this.state);
   };
 
   submitHandler = e => {
     e.preventDefault();
-    this.props.onAuth(this.state.email, this.state.password);
+    const { onAuth } = this.props;
+    const { email, password } = this.state;
+    onAuth(email, password);
   };
 
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    });
-  };
-  renderRedirect = () => {
-    if (this.props.onLogined) {
-      return <Redirect to="/" />;
+  handleRedirect = () => {
+    const { onLogined } = this.props;
+    if (onLogined) {
+      this.props.history.push('/');
     }
   };
 
   render() {
     const { classes, onEmailValid, onPasswordValid } = this.props;
-    // console.log(onEmailValid);
-
     return (
       <div>
         <form
@@ -129,7 +122,7 @@ export class LoginUser extends Component {
             </span>
           </div>
         </form>
-        {this.renderRedirect()}
+        {this.handleRedirect()}
       </div>
     );
   }

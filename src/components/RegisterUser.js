@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-// import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-// import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {
@@ -58,7 +55,8 @@ export class RegisterUser extends Component {
   };
 
   handleChangeName = e => {
-    this.props.onValidName(checkValidity(e.target.value));
+    const { onValidName } = this.props;
+    onValidName(checkValidity(e.target.value));
     this.setState({
       touchedName: true,
       name: e.target.value
@@ -66,7 +64,8 @@ export class RegisterUser extends Component {
   };
 
   handleChangeEmail = e => {
-    this.props.onValidEmail(checkValidity(e.target.value));
+    const { onValidEmail } = this.props;
+    onValidEmail(checkValidity(e.target.value));
     this.setState({
       touchedEmail: true,
       email: e.target.value
@@ -74,27 +73,25 @@ export class RegisterUser extends Component {
   };
 
   handleChangePassword = e => {
-    this.props.onValidPassword(checkValidity(e.target.value));
+    const { onValidPassword } = this.props;
+    onValidPassword(checkValidity(e.target.value));
     this.setState({
       touchedPassword: true,
       password: e.target.value
     });
-    console.log(this.state);
   };
 
   submitHandler = e => {
     e.preventDefault();
-    this.props.onSignup(this.state.name, this.state.email, this.state.password);
+    const { onSignup } = this.props;
+    const { name, email, password } = this.state;
+    onSignup(name, email, password);
   };
 
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    });
-  };
-  renderRedirect = () => {
-    if (this.props.onLogined) {
-      return <Redirect to="/" />;
+  handleRedirect = () => {
+    const { onLogined } = this.props;
+    if (onLogined) {
+      this.props.history.push('/');
     }
   };
 
@@ -152,7 +149,7 @@ export class RegisterUser extends Component {
             Signup
           </Button>
         </form>
-        {this.renderRedirect()}
+        {this.handleRedirect()}
       </div>
     );
   }

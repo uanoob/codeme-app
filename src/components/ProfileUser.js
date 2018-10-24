@@ -3,18 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-// import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-// import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { getUserProfile } from '../store/actions';
 
 const styles = {
   container: {
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    margin: "auto",
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    margin: 'auto',
     marginTop: 16,
     width: 300
   },
