@@ -35,27 +35,27 @@ export const isPasswordValid = bool => {
   };
 };
 
-export const authStart = () => {
+const authStart = () => {
   return {
     type: AUTH_START
   };
 };
 
-export const authSuccess = token => {
+const authSuccess = token => {
   return {
     type: AUTH_SUCCESS,
     token
   };
 };
 
-export const isAuth = boolean => {
+const isAuth = boolean => {
   return {
     type: IS_AUTH,
     isAuth: boolean
   };
 };
 
-export const authFail = error => {
+const authFail = error => {
   return {
     type: AUTH_FAIL,
     error: error
@@ -70,7 +70,7 @@ export const logout = () => {
   };
 };
 
-export const logoutHandler = () => {
+const logoutHandler = () => {
   return {
     type: AUTH_LOGOUT
   };
@@ -97,20 +97,20 @@ export const auth = (email, password) => {
   };
 };
 
-export const signupStart = () => {
+const signupStart = () => {
   return {
     type: SIGNUP_START
   };
 };
 
-export const signupSuccess = token => {
+const signupSuccess = token => {
   return {
     type: SIGNUP_SUCCESS,
     token
   };
 };
 
-export const signupFail = error => {
+const signupFail = error => {
   return {
     type: SIGNUP_FAIL,
     error: error

@@ -24,7 +24,6 @@ export const getUserFail = error => {
 export const getUserProfile = token => {
   return dispatch => {
     dispatch(getUserStart());
-    // console.log(token);
     const instance = axios.create({
       headers: { 'x-access-token': token }
     });
@@ -32,7 +31,6 @@ export const getUserProfile = token => {
     instance
       .get(url)
       .then(response => {
-        // console.log(response.data);
         dispatch(getUserSuccess(response.data));
       })
       .catch(err => {
