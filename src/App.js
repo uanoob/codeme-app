@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Provider } from "react-redux";
-import "./App.css";
-import store from "./store/store";
-import Layout from "./hoc/Layout";
-import Home from "./container/Home";
-import LoginUser from "./components/loginUser";
-import RegisterUser from "./components/RegisterUser";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import './App.css';
+import store from './store/store';
+import Layout from './hoc/Layout';
+import Home from './container/Home';
+import LoginUser from './components/LoginUser';
+import RegisterUser from './components/RegisterUser';
 
 const App = () => (
   <Provider store={store}>

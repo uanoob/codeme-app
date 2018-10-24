@@ -1,10 +1,10 @@
 import React from "react";
 
-import AppBar from "../container/AppBar";
+import MenuAppBar from "../container/MenuAppBar";
 
 const Layout = props => (
   <div>
-    <AppBar />
+    <MenuAppBar />
     <div className="">{props.children}</div>
   </div>
 );
