@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -80,55 +81,69 @@ export class RegisterUser extends Component {
     this.props.onSignup(this.state.name, this.state.email, this.state.password);
   };
 
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    });
+  };
+  renderRedirect = () => {
+    if (this.props.onLogined) {
+      return <Redirect to="/" />;
+    }
+  };
+
   render() {
     const { classes } = this.props;
 
     return (
-      <form
-        className={classes.container}
-        noValidate
-        autoComplete="off"
-        onSubmit={this.submitHandler}
-      >
-        <TextField
-          id="outlined-name"
-          label="Name"
-          className={classes.textField}
-          value={this.state.name}
-          onChange={this.handleChangeName}
-          margin="normal"
-          variant="outlined"
-        />
-        <TextField
-          id="outlined-email-input"
-          label="Email"
-          className={classes.textField}
-          type="email"
-          name="email"
-          onChange={this.handleChangeEmail}
-          autoComplete="email"
-          margin="normal"
-          variant="outlined"
-        />
-        <TextField
-          id="outlined-password-input"
-          label="Password"
-          className={classes.textField}
-          type="password"
-          onChange={this.handleChangePassword}
-          autoComplete="current-password"
-          margin="normal"
-          variant="outlined"
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="secondary"
-          className={classes.button}
+      <div>
+        <form
+          className={classes.container}
+          noValidate
+          autoComplete="off"
+          onSubmit={this.submitHandler}
         >
-          Signup
-        </Button>
-      </form>
+          <TextField
+            id="outlined-name"
+            label="Name"
+            className={classes.textField}
+            value={this.state.name}
+            onChange={this.handleChangeName}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="outlined-email-input"
+            label="Email"
+            className={classes.textField}
+            type="email"
+            name="email"
+            onChange={this.handleChangeEmail}
+            autoComplete="email"
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="outlined-password-input"
+            label="Password"
+            className={classes.textField}
+            type="password"
+            onChange={this.handleChangePassword}
+            autoComplete="current-password"
+            margin="normal"
+            variant="outlined"
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+          >
+            Signup
+          </Button>
+        </form>
+        {this.renderRedirect()}
+      </div>
     );
   }
 }
@@ -137,7 +152,9 @@ RegisterUser.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  onLogined: state.auth.isAuth
+});
 
 const mapDispatchToProps = {
   onSignup: signup,

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 import {
   IS_NAME_VALID,
@@ -12,7 +12,7 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
   IS_AUTH
-} from "./types";
+} from './types';
 
 export const isNameValid = bool => {
   return {
@@ -41,10 +41,17 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token) => {
+export const authSuccess = token => {
   return {
     type: AUTH_SUCCESS,
-    token,
+    token
+  };
+};
+
+export const isAuth = boolean => {
+  return {
+    type: IS_AUTH,
+    isAuth: boolean
   };
 };
 
@@ -56,7 +63,14 @@ export const authFail = error => {
 };
 
 export const logout = () => {
-  localStorage.removeItem("token");
+  return dispatch => {
+    localStorage.removeItem('token');
+    dispatch(logoutHandler());
+    dispatch(isAuth(false));
+  };
+};
+
+export const logoutHandler = () => {
   return {
     type: AUTH_LOGOUT
   };
@@ -67,15 +81,15 @@ export const auth = (email, password) => {
     dispatch(authStart());
     const authData = {
       email,
-      password,
+      password
     };
-    let url =
-      'http://localhost:8000/api/auth/login';
+    let url = 'http://localhost:8000/api/auth/login';
     axios
       .post(url, authData)
       .then(response => {
         localStorage.setItem('token', response.data.token);
         dispatch(authSuccess(response.data.token));
+        dispatch(isAuth(true));
       })
       .catch(err => {
         dispatch(authFail(err.response.data.error));
@@ -89,10 +103,10 @@ export const signupStart = () => {
   };
 };
 
-export const signupSuccess = (token) => {
+export const signupSuccess = token => {
   return {
     type: SIGNUP_SUCCESS,
-    token,
+    token
   };
 };
 
@@ -109,15 +123,15 @@ export const signup = (name, email, password) => {
     const signupData = {
       name,
       email,
-      password,
+      password
     };
-    let url =
-      'http://localhost:8000/api/auth/register';
+    let url = 'http://localhost:8000/api/auth/register';
     axios
       .post(url, signupData)
       .then(response => {
         localStorage.setItem('token', response.data.token);
         dispatch(signupSuccess(response.data.token));
+        dispatch(isAuth(true));
       })
       .catch(err => {
         dispatch(signupFail(err.response.data.error));
@@ -125,14 +139,13 @@ export const signup = (name, email, password) => {
   };
 };
 
-
 export const authCheckState = () => {
   return dispatch => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (!token) {
       dispatch(logout());
     } else {
-      const userId = localStorage.getItem("userId");
+      const userId = localStorage.getItem('userId');
       dispatch(authSuccess(token, userId));
     }
   };

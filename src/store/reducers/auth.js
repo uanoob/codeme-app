@@ -6,6 +6,7 @@ import {
   AUTH_SUCCESS,
   AUTH_FAIL,
   AUTH_LOGOUT,
+  IS_AUTH,
   SIGNUP_START,
   SIGNUP_SUCCESS,
   SIGNUP_FAIL
@@ -16,7 +17,7 @@ const initialState = {
   emailValid: false,
   passwordValid: false,
   token: null,
-  isLogined: false,
+  isAuth: false,
   loading: false,
   loaded: false,
   error: null
@@ -45,13 +46,15 @@ export default function(state = initialState, action) {
     case AUTH_START:
       return {
         ...state,
+        loading: true,
         error: null
       };
     case AUTH_SUCCESS:
       return {
         ...state,
         token: action.token,
-        isLogined: true,
+        loading: false,
+        loaded: true,
         error: null
       };
     case AUTH_FAIL:
@@ -63,7 +66,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         token: null,
-        isLogined: false
+      };
+      case IS_AUTH:
+      return {
+        ...state,
+        isAuth: action.isAuth,
+        error: null
       };
     case SIGNUP_START:
       return {
@@ -74,7 +82,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         token: action.token,
-        isLogined: true,
         error: null
       };
     case SIGNUP_FAIL:
