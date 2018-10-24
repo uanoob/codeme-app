@@ -7,6 +7,7 @@ import Layout from './hoc/Layout';
 import Home from './container/Home';
 import LoginUser from './components/LoginUser';
 import RegisterUser from './components/RegisterUser';
+import ProfileUser from './components/ProfileUser';
 
 const App = () => (
   <Provider store={store}>
@@ -16,6 +17,7 @@ const App = () => (
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={LoginUser} />
           <Route exact path="/register" component={RegisterUser} />
+          <Route exact path="/profile" component={ProfileUser} />
         </Switch>
       </Layout>
     </Router>
