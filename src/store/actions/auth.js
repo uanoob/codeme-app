@@ -145,8 +145,8 @@ export const authCheckState = () => {
     if (!token) {
       dispatch(logout());
     } else {
-      const userId = localStorage.getItem('userId');
-      dispatch(authSuccess(token, userId));
+      dispatch(authSuccess(token));
+      dispatch(isAuth(true));
     }
   };
 };

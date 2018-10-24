@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Redirect } from 'react-router-dom'
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { auth, isEmailValid, isPasswordValid } from "../store/actions";
-import { checkValidity } from "../utils/utility";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+// import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+// import MenuItem from "@material-ui/core/MenuItem";
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import { auth, isEmailValid, isPasswordValid } from '../store/actions';
+import { checkValidity } from '../utils/utility';
 
 const styles = theme => ({
   container: {
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    margin: "auto",
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    margin: 'auto',
     width: 300
   },
   textField: {
@@ -34,13 +34,16 @@ const styles = theme => ({
 export class LoginUser extends Component {
   state = {
     redirect: false,
-    email: "",
-    password: ""
+    email: '',
+    password: '',
+    touchedEmail: false,
+    touchedPassword: false
   };
 
   handleChangeEmail = e => {
     this.props.onValidEmail(checkValidity(e.target.value));
     this.setState({
+      touchedEmail: true,
       email: e.target.value
     });
   };
@@ -48,6 +51,7 @@ export class LoginUser extends Component {
   handleChangePassword = e => {
     this.props.onValidPassword(checkValidity(e.target.value));
     this.setState({
+      touchedPassword: true,
       password: e.target.value
     });
     // console.log(this.state);
@@ -70,7 +74,8 @@ export class LoginUser extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, onEmailValid, onPasswordValid } = this.props;
+    // console.log(onEmailValid);
 
     return (
       <div>
@@ -91,6 +96,7 @@ export class LoginUser extends Component {
             autoComplete="on"
             margin="normal"
             variant="outlined"
+            error={!onEmailValid && this.state.touchedEmail}
           />
           <TextField
             id="outlined-password-input"
@@ -101,6 +107,7 @@ export class LoginUser extends Component {
             autoComplete="on"
             margin="normal"
             variant="outlined"
+            error={!onPasswordValid && this.state.touchedPassword}
           />
           <Button
             type="submit"
@@ -132,7 +139,9 @@ LoginUser.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  onLogined: state.auth.isAuth
+  onLogined: state.auth.isAuth,
+  onEmailValid: state.auth.emailValid,
+  onPasswordValid: state.auth.passwordValid
 });
 
 const mapDispatchToProps = {

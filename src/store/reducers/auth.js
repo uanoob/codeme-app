@@ -28,19 +28,19 @@ export default function(state = initialState, action) {
     case IS_NAME_VALID:
       return {
         ...state,
-        nameValid: action.payload,
+        nameValid: action.bool,
         error: null
       };
     case IS_EMAIL_VALID:
       return {
         ...state,
-        emailValid: action.payload,
+        emailValid: action.bool,
         error: null
       };
     case IS_PASSWORD_VALID:
       return {
         ...state,
-        passwordValid: action.payload,
+        passwordValid: action.bool,
         error: null
       };
     case AUTH_START:

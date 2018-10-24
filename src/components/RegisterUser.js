@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
+// import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {
@@ -51,12 +51,16 @@ export class RegisterUser extends Component {
   state = {
     name: '',
     email: '',
-    password: ''
+    password: '',
+    touchedName: false,
+    touchedEmail: false,
+    touchedPassword: false
   };
 
   handleChangeName = e => {
     this.props.onValidName(checkValidity(e.target.value));
     this.setState({
+      touchedName: true,
       name: e.target.value
     });
   };
@@ -64,6 +68,7 @@ export class RegisterUser extends Component {
   handleChangeEmail = e => {
     this.props.onValidEmail(checkValidity(e.target.value));
     this.setState({
+      touchedEmail: true,
       email: e.target.value
     });
   };
@@ -71,6 +76,7 @@ export class RegisterUser extends Component {
   handleChangePassword = e => {
     this.props.onValidPassword(checkValidity(e.target.value));
     this.setState({
+      touchedPassword: true,
       password: e.target.value
     });
     console.log(this.state);
@@ -93,7 +99,7 @@ export class RegisterUser extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, onNameValid, onEmailValid, onPasswordValid } = this.props;
 
     return (
       <div>
@@ -111,6 +117,7 @@ export class RegisterUser extends Component {
             onChange={this.handleChangeName}
             margin="normal"
             variant="outlined"
+            error={!onNameValid && this.state.touchedName}
           />
           <TextField
             id="outlined-email-input"
@@ -122,6 +129,7 @@ export class RegisterUser extends Component {
             autoComplete="email"
             margin="normal"
             variant="outlined"
+            error={!onEmailValid && this.state.touchedEmail}
           />
           <TextField
             id="outlined-password-input"
@@ -132,6 +140,7 @@ export class RegisterUser extends Component {
             autoComplete="current-password"
             margin="normal"
             variant="outlined"
+            error={!onPasswordValid && this.state.touchedPassword}
           />
           <Button
             type="submit"
@@ -153,7 +162,10 @@ RegisterUser.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  onLogined: state.auth.isAuth
+  onLogined: state.auth.isAuth,
+  onNameValid: state.auth.nameValid,
+  onEmailValid: state.auth.emailValid,
+  onPasswordValid: state.auth.passwordValid
 });
 
 const mapDispatchToProps = {
