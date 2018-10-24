@@ -147,6 +147,7 @@ export class RegisterUser extends Component {
             variant="contained"
             color="secondary"
             className={classes.button}
+            disabled={!(onNameValid && onEmailValid && onPasswordValid)}
           >
             Signup
           </Button>
