@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -10,8 +10,8 @@ const styles = theme => ({
     marginTop: 20,
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 function Home(props) {
@@ -29,7 +29,7 @@ function Home(props) {
 }
 
 Home.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.shape({ root: PropTypes.string.isRequired }).isRequired,
 };
 
 export default withStyles(styles)(Home);

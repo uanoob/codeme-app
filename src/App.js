@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import {
+  Route, Switch, Redirect, withRouter,
+} from 'react-router-dom';
 import './App.css';
 import Layout from './hoc/Layout';
 import Home from './container/Home';
@@ -11,10 +14,12 @@ import { authCheckState } from './store/actions';
 
 class App extends Component {
   componentDidMount() {
-    this.props.onTryAutoSignup();
+    const { onTryAutoSignup } = this.props;
+    onTryAutoSignup();
   }
 
   render() {
+    const { isAutenticated } = this.props;
     let routes = (
       <Switch>
         <Route path="/login" component={LoginUser} />
@@ -23,8 +28,7 @@ class App extends Component {
         <Redirect to="/" />
       </Switch>
     );
-    console.log(this.props.isAutenticated);
-    if (this.props.isAutenticated) {
+    if (isAutenticated) {
       routes = (
         <Switch>
           <Route exact path="/" component={Home} />
@@ -41,19 +45,22 @@ class App extends Component {
   }
 }
 
-App.propTypes = {};
+App.propTypes = {
+  onTryAutoSignup: PropTypes.func.isRequired,
+  isAutenticated: PropTypes.bool.isRequired,
+};
 
 const mapStateToProps = state => ({
-  isAutenticated: state.auth.isAuth
+  isAutenticated: state.auth.isAuth,
 });
 
 const mapDispatchToProps = {
-  onTryAutoSignup: authCheckState
+  onTryAutoSignup: authCheckState,
 };
 
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps
-  )(App)
+    mapDispatchToProps,
+  )(App),
 );

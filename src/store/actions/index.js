@@ -1,11 +1,11 @@
 export {
-  isNameValid,
-  isEmailValid,
-  isPasswordValid,
+  setNameValid,
+  setEmailValid,
+  setPasswordValid,
   auth,
   logout,
   signup,
-  authCheckState
+  authCheckState,
 } from './auth';
 
 export { getUserProfile } from './user';

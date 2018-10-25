@@ -9,8 +9,8 @@ import {
   IS_AUTH,
   SIGNUP_START,
   SIGNUP_SUCCESS,
-  SIGNUP_FAIL
-} from "../actions/types";
+  SIGNUP_FAIL,
+} from '../actions/types';
 
 const initialState = {
   nameValid: false,
@@ -20,34 +20,34 @@ const initialState = {
   isAuth: false,
   loading: false,
   loaded: false,
-  error: null
+  error: null,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case IS_NAME_VALID:
       return {
         ...state,
         nameValid: action.bool,
-        error: null
+        error: null,
       };
     case IS_EMAIL_VALID:
       return {
         ...state,
         emailValid: action.bool,
-        error: null
+        error: null,
       };
     case IS_PASSWORD_VALID:
       return {
         ...state,
         passwordValid: action.bool,
-        error: null
+        error: null,
       };
     case AUTH_START:
       return {
         ...state,
         loading: true,
-        error: null
+        error: null,
       };
     case AUTH_SUCCESS:
       return {
@@ -55,39 +55,39 @@ export default function(state = initialState, action) {
         token: action.token,
         loading: false,
         loaded: true,
-        error: null
+        error: null,
       };
     case AUTH_FAIL:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       };
     case AUTH_LOGOUT:
       return {
         ...state,
         token: null,
       };
-      case IS_AUTH:
+    case IS_AUTH:
       return {
         ...state,
         isAuth: action.isAuth,
-        error: null
+        error: null,
       };
     case SIGNUP_START:
       return {
         ...state,
-        error: null
+        error: null,
       };
     case SIGNUP_SUCCESS:
       return {
         ...state,
         token: action.token,
-        error: null
+        error: null,
       };
     case SIGNUP_FAIL:
       return {
         ...state,
-        error: action.error
+        error: action.error,
       };
     default:
       return state;

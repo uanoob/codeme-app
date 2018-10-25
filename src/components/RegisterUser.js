@@ -5,43 +5,43 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {
-  signup,
-  isNameValid,
-  isEmailValid,
-  isPasswordValid
+  signup, setNameValid, setEmailValid, setPasswordValid,
 } from '../store/actions';
-import { checkValidity } from '../utils/utility';
+import checkValidity from '../utils/utility';
 
 const styles = theme => ({
+  typography: {
+    useNextVariants: true,
+  },
   container: {
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
     margin: 'auto',
-    width: 300
+    width: 300,
   },
   textField: {
     marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
   },
   dense: {
-    marginTop: 16
+    marginTop: 16,
   },
   menu: {
-    width: 200
+    width: 200,
   },
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
   },
   leftIcon: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing.unit,
   },
   iconSmall: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
 
 export class RegisterUser extends Component {
@@ -51,37 +51,37 @@ export class RegisterUser extends Component {
     password: '',
     touchedName: false,
     touchedEmail: false,
-    touchedPassword: false
+    touchedPassword: false,
   };
 
-  handleChangeName = e => {
-    const { onValidName } = this.props;
-    onValidName(checkValidity(e.target.value));
+  handleChangeName = (e) => {
+    const { onSetNameValid } = this.props;
+    onSetNameValid(checkValidity(e.target.value));
     this.setState({
       touchedName: true,
-      name: e.target.value
+      name: e.target.value,
     });
   };
 
-  handleChangeEmail = e => {
-    const { onValidEmail } = this.props;
-    onValidEmail(checkValidity(e.target.value));
+  handleChangeEmail = (e) => {
+    const { onSetEmailValid } = this.props;
+    onSetEmailValid(checkValidity(e.target.value));
     this.setState({
       touchedEmail: true,
-      email: e.target.value
+      email: e.target.value,
     });
   };
 
-  handleChangePassword = e => {
-    const { onValidPassword } = this.props;
-    onValidPassword(checkValidity(e.target.value));
+  handleChangePassword = (e) => {
+    const { onSetPasswordValid } = this.props;
+    onSetPasswordValid(checkValidity(e.target.value));
     this.setState({
       touchedPassword: true,
-      password: e.target.value
+      password: e.target.value,
     });
   };
 
-  submitHandler = e => {
+  submitHandler = (e) => {
     e.preventDefault();
     const { onSignup } = this.props;
     const { name, email, password } = this.state;
@@ -89,7 +89,13 @@ export class RegisterUser extends Component {
   };
 
   render() {
-    const { classes, onNameValid, onEmailValid, onPasswordValid } = this.props;
+    const {
+      classes, nameFieldValid, emailFieldValid, passwordFieldValid,
+    } = this.props;
+
+    const {
+      name, touchedName, touchedEmail, touchedPassword,
+    } = this.state;
 
     return (
       <div>
@@ -103,11 +109,11 @@ export class RegisterUser extends Component {
             id="outlined-name"
             label="Name"
             className={classes.textField}
-            value={this.state.name}
+            value={name}
             onChange={this.handleChangeName}
             margin="normal"
             variant="outlined"
-            error={!onNameValid && this.state.touchedName}
+            error={!nameFieldValid && touchedName}
           />
           <TextField
             id="outlined-email-input"
@@ -119,7 +125,7 @@ export class RegisterUser extends Component {
             autoComplete="email"
             margin="normal"
             variant="outlined"
-            error={!onEmailValid && this.state.touchedEmail}
+            error={!emailFieldValid && touchedEmail}
           />
           <TextField
             id="outlined-password-input"
@@ -130,14 +136,14 @@ export class RegisterUser extends Component {
             autoComplete="current-password"
             margin="normal"
             variant="outlined"
-            error={!onPasswordValid && this.state.touchedPassword}
+            error={!passwordFieldValid && touchedPassword}
           />
           <Button
             type="submit"
             variant="contained"
             color="secondary"
             className={classes.button}
-            disabled={!(onNameValid && onEmailValid && onPasswordValid)}
+            disabled={!(nameFieldValid && emailFieldValid && passwordFieldValid)}
           >
             Signup
           </Button>
@@ -148,23 +154,38 @@ export class RegisterUser extends Component {
 }
 
 RegisterUser.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.shape({
+    container: PropTypes.string.isRequired,
+    textField: PropTypes.string.isRequired,
+    menu: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+    leftIcon: PropTypes.string.isRequired,
+    rightIcon: PropTypes.string.isRequired,
+    iconSmall: PropTypes.string.isRequired,
+  }).isRequired,
+  nameFieldValid: PropTypes.bool.isRequired,
+  emailFieldValid: PropTypes.bool.isRequired,
+  passwordFieldValid: PropTypes.bool.isRequired,
+  onSetNameValid: PropTypes.func.isRequired,
+  onSetEmailValid: PropTypes.func.isRequired,
+  onSetPasswordValid: PropTypes.func.isRequired,
+  onSignup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  onNameValid: state.auth.nameValid,
-  onEmailValid: state.auth.emailValid,
-  onPasswordValid: state.auth.passwordValid
+  nameFieldValid: state.auth.nameValid,
+  emailFieldValid: state.auth.emailValid,
+  passwordFieldValid: state.auth.passwordValid,
 });
 
 const mapDispatchToProps = {
   onSignup: signup,
-  onValidName: isNameValid,
-  onValidEmail: isEmailValid,
-  onValidPassword: isPasswordValid
+  onSetNameValid: setNameValid,
+  onSetEmailValid: setEmailValid,
+  onSetPasswordValid: setPasswordValid,
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(RegisterUser));

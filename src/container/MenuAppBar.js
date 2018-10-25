@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Switch from '@material-ui/core/Switch';
@@ -17,32 +17,28 @@ import { authCheckState, logout } from '../store/actions';
 
 const styles = {
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20
-  }
+    marginRight: 20,
+  },
 };
 
 class MenuAppBar extends React.Component {
   state = {
-    anchorEl: null
+    anchorEl: null,
   };
 
-  // componentDidMount() {
-  //   const { onAuthCheckState } = this.props;
-  //   onAuthCheckState();
-  // }
-
-  onHandleLogout = event => {
-    this.props.onLogout();
+  onHandleLogout = () => {
+    const { onLogout } = this.props;
+    onLogout();
   };
 
-  handleMenu = event => {
+  handleMenu = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -51,7 +47,7 @@ class MenuAppBar extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, onLogined } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
@@ -63,20 +59,15 @@ class MenuAppBar extends React.Component {
               CodeMe
             </Typography>
             <FormGroup>
-              <Link to='/login'>
+              <Link to="/login">
                 <FormControlLabel
-                  control={
-                    <Switch
-                      checked={this.props.onLogined}
-                      aria-label="LoginSwitch"
-                    />
-                  }
-                  label={this.props.onLogined ? 'Logout' : 'Login'}
-                  onClick={this.props.onLogined ? this.onHandleLogout : null}
+                  control={<Switch checked={onLogined} aria-label="LoginSwitch" />}
+                  label={onLogined ? 'Logout' : 'Login'}
+                  onClick={onLogined ? this.onHandleLogout : null}
                 />
               </Link>
             </FormGroup>
-            {this.props.onLogined && (
+            {onLogined && (
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : null}
@@ -91,11 +82,11 @@ class MenuAppBar extends React.Component {
                   anchorEl={anchorEl}
                   anchorOrigin={{
                     vertical: 'top',
-                    horizontal: 'right'
+                    horizontal: 'right',
                   }}
                   transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'right'
+                    horizontal: 'right',
                   }}
                   open={open}
                   onClose={this.handleClose}
@@ -115,19 +106,21 @@ class MenuAppBar extends React.Component {
 }
 
 MenuAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.shape({ root: PropTypes.string.isRequired }).isRequired,
+  onLogout: PropTypes.func.isRequired,
+  onLogined: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  onLogined: state.auth.isAuth
+  onLogined: state.auth.isAuth,
 });
 
 const mapDispatchToProps = {
   onAuthCheckState: authCheckState,
-  onLogout: logout
+  onLogout: logout,
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(MenuAppBar));

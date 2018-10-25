@@ -5,27 +5,30 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { auth, isEmailValid, isPasswordValid } from '../store/actions';
-import { checkValidity } from '../utils/utility';
+import { auth, setEmailValid, setPasswordValid } from '../store/actions';
+import checkValidity from '../utils/utility';
 
 const styles = theme => ({
+  typography: {
+    useNextVariants: true,
+  },
   container: {
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
     margin: 'auto',
-    width: 300
+    width: 300,
   },
   textField: {
     marginLeft: theme.spacing.auto,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
   },
   dense: {
-    marginTop: 16
+    marginTop: 16,
   },
   menu: {
-    width: 200
-  }
+    width: 200,
+  },
 });
 
 export class LoginUser extends Component {
@@ -33,28 +36,28 @@ export class LoginUser extends Component {
     email: '',
     password: '',
     touchedEmail: false,
-    touchedPassword: false
+    touchedPassword: false,
   };
 
-  handleChangeEmail = e => {
-    const { onValidEmail } = this.props;
-    onValidEmail(checkValidity(e.target.value));
+  handleChangeEmail = (e) => {
+    const { onSetEmailValid } = this.props;
+    onSetEmailValid(checkValidity(e.target.value));
     this.setState({
       touchedEmail: true,
-      email: e.target.value
+      email: e.target.value,
     });
   };
 
-  handleChangePassword = e => {
-    const { onValidPassword } = this.props;
-    onValidPassword(checkValidity(e.target.value));
+  handleChangePassword = (e) => {
+    const { onSetPasswordValid } = this.props;
+    onSetPasswordValid(checkValidity(e.target.value));
     this.setState({
       touchedPassword: true,
-      password: e.target.value
+      password: e.target.value,
     });
   };
 
-  submitHandler = e => {
+  submitHandler = (e) => {
     e.preventDefault();
     const { onAuth } = this.props;
     const { email, password } = this.state;
@@ -62,7 +65,10 @@ export class LoginUser extends Component {
   };
 
   render() {
-    const { classes, onEmailValid, onPasswordValid } = this.props;
+    const { emailFieldValid, passwordFieldValid } = this.props;
+    const { email, touchedEmail, touchedPassword } = this.state;
+    const { classes } = this.props;
+
     return (
       <div>
         <form
@@ -77,13 +83,14 @@ export class LoginUser extends Component {
             className={classes.textField}
             type="email"
             name="email"
-            value={this.state.email}
+            value={email}
             onChange={this.handleChangeEmail}
             autoComplete="on"
             margin="normal"
             variant="outlined"
-            error={!onEmailValid && this.state.touchedEmail}
+            error={!emailFieldValid && touchedEmail}
           />
+
           <TextField
             id="outlined-password-input"
             label="Password"
@@ -93,14 +100,14 @@ export class LoginUser extends Component {
             autoComplete="on"
             margin="normal"
             variant="outlined"
-            error={!onPasswordValid && this.state.touchedPassword}
+            error={!passwordFieldValid && touchedPassword}
           />
           <Button
             type="submit"
             variant="contained"
             color="secondary"
             className={classes.button}
-            disabled={!(onEmailValid && onPasswordValid)}
+            disabled={!(emailFieldValid && passwordFieldValid)}
           >
             Login
           </Button>
@@ -121,22 +128,32 @@ export class LoginUser extends Component {
 }
 
 LoginUser.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.shape({
+    container: PropTypes.string.isRequired,
+    textField: PropTypes.string.isRequired,
+    menu: PropTypes.string.isRequired,
+  }).isRequired,
+  emailFieldValid: PropTypes.bool.isRequired,
+  passwordFieldValid: PropTypes.bool.isRequired,
+  onSetEmailValid: PropTypes.func.isRequired,
+  onSetPasswordValid: PropTypes.func.isRequired,
+  onAuth: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   onLogined: state.auth.isAuth,
-  onEmailValid: state.auth.emailValid,
-  onPasswordValid: state.auth.passwordValid
+  onError: state.auth.error,
+  emailFieldValid: state.auth.emailValid,
+  passwordFieldValid: state.auth.passwordValid,
 });
 
 const mapDispatchToProps = {
   onAuth: auth,
-  onValidEmail: isEmailValid,
-  onValidPassword: isPasswordValid
+  onSetEmailValid: setEmailValid,
+  onSetPasswordValid: setPasswordValid,
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(LoginUser));
