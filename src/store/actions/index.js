@@ -1,11 +1,5 @@
-export {
-  setNameValid,
-  setEmailValid,
-  setPasswordValid,
-  auth,
-  logout,
-  signup,
-  authCheckState,
-} from './auth';
+export { auth, logout, login, authCheckState } from './authentication';
+
+export { setNameInputValid, setPasswordInputValid } from './validation';
 
 export { getUserProfile } from './user';

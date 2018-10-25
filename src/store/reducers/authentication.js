@@ -1,55 +1,31 @@
 import {
-  IS_NAME_VALID,
-  IS_EMAIL_VALID,
-  IS_PASSWORD_VALID,
+  LOGIN_START,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  IS_LOGINED,
   AUTH_START,
   AUTH_SUCCESS,
   AUTH_FAIL,
-  AUTH_LOGOUT,
-  IS_AUTH,
-  SIGNUP_START,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAIL,
 } from '../actions/types';
 
 const initialState = {
-  nameValid: false,
-  emailValid: false,
-  passwordValid: false,
   token: null,
-  isAuth: false,
+  isLogined: false,
   loading: false,
   loaded: false,
   error: null,
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
-    case IS_NAME_VALID:
-      return {
-        ...state,
-        nameValid: action.bool,
-        error: null,
-      };
-    case IS_EMAIL_VALID:
-      return {
-        ...state,
-        emailValid: action.bool,
-        error: null,
-      };
-    case IS_PASSWORD_VALID:
-      return {
-        ...state,
-        passwordValid: action.bool,
-        error: null,
-      };
-    case AUTH_START:
+    case LOGIN_START:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case AUTH_SUCCESS:
+    case LOGIN_SUCCESS:
       return {
         ...state,
         token: action.token,
@@ -57,34 +33,34 @@ export default function (state = initialState, action) {
         loaded: true,
         error: null,
       };
-    case AUTH_FAIL:
+    case LOGIN_FAIL:
       return {
         ...state,
         error: action.error,
       };
-    case AUTH_LOGOUT:
+    case LOGOUT:
       return {
         ...state,
         token: null,
       };
-    case IS_AUTH:
+    case IS_LOGINED:
       return {
         ...state,
-        isAuth: action.isAuth,
+        isLogined: action.isLogined,
         error: null,
       };
-    case SIGNUP_START:
+    case AUTH_START:
       return {
         ...state,
         error: null,
       };
-    case SIGNUP_SUCCESS:
+    case AUTH_SUCCESS:
       return {
         ...state,
         token: action.token,
         error: null,
       };
-    case SIGNUP_FAIL:
+    case AUTH_FAIL:
       return {
         ...state,
         error: action.error,

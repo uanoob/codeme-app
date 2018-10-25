@@ -47,7 +47,7 @@ class MenuAppBar extends React.Component {
   };
 
   render() {
-    const { classes, onLogined } = this.props;
+    const { classes, isAutenticated } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
@@ -56,18 +56,18 @@ class MenuAppBar extends React.Component {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" color="inherit" className={classes.grow}>
-              CodeMe
+              Incode Blog
             </Typography>
             <FormGroup>
               <Link to="/login">
                 <FormControlLabel
-                  control={<Switch checked={onLogined} aria-label="LoginSwitch" />}
-                  label={onLogined ? 'Logout' : 'Login'}
-                  onClick={onLogined ? this.onHandleLogout : null}
+                  control={<Switch checked={isAutenticated} aria-label="LoginSwitch" />}
+                  label={isAutenticated ? 'Logout' : 'Login'}
+                  onClick={isAutenticated ? this.onHandleLogout : null}
                 />
               </Link>
             </FormGroup>
-            {onLogined && (
+            {isAutenticated && (
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : null}
@@ -108,11 +108,11 @@ class MenuAppBar extends React.Component {
 MenuAppBar.propTypes = {
   classes: PropTypes.shape({ root: PropTypes.string.isRequired }).isRequired,
   onLogout: PropTypes.func.isRequired,
-  onLogined: PropTypes.bool.isRequired,
+  isAutenticated: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  onLogined: state.auth.isAuth,
+  isAutenticated: state.auth.isLogined,
 });
 
 const mapDispatchToProps = {
