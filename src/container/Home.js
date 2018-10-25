@@ -1,7 +1,35 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
-const Home = () => {
-  return <div className="">Home</div>;
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    marginTop: 20,
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    textAlign: 'center'
+  }
+});
+
+function Home(props) {
+  const { classes } = props;
+
+  return (
+    <div>
+      <Paper className={classes.root} elevation={1}>
+        <Typography variant="h5" component="h3">
+          Home
+        </Typography>
+      </Paper>
+    </div>
+  );
+}
+
+Home.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
-export default Home;
+export default withStyles(styles)(Home);
