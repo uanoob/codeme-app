@@ -61,13 +61,6 @@ export class LoginUser extends Component {
     onAuth(email, password);
   };
 
-  handleRedirect = () => {
-    const { onLogined } = this.props;
-    if (onLogined) {
-      this.props.history.push('/');
-    }
-  };
-
   render() {
     const { classes, onEmailValid, onPasswordValid } = this.props;
     return (
@@ -122,7 +115,6 @@ export class LoginUser extends Component {
             </span>
           </div>
         </form>
-        {this.handleRedirect()}
       </div>
     );
   }

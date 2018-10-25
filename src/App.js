@@ -1,33 +1,59 @@
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom';
-import { Provider } from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import './App.css';
-import store from './store/store';
 import Layout from './hoc/Layout';
 import Home from './container/Home';
 import LoginUser from './components/LoginUser';
 import RegisterUser from './components/RegisterUser';
 import ProfileUser from './components/ProfileUser';
+import { authCheckState } from './store/actions';
 
-const App = () => (
-  <Provider store={store}>
-    <Router>
-      <Layout>
+class App extends Component {
+  componentDidMount() {
+    this.props.onTryAutoSignup();
+  }
+
+  render() {
+    let routes = (
+      <Switch>
+        <Route path="/login" component={LoginUser} />
+        <Route path="/register" component={RegisterUser} />
+        <Route exact path="/" component={Home} />
+        <Redirect to="/" />
+      </Switch>
+    );
+    console.log(this.props.isAutenticated);
+    if (this.props.isAutenticated) {
+      routes = (
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={LoginUser} />
-          <Route exact path="/register" component={RegisterUser} />
           <Route exact path="/profile" component={ProfileUser} />
           <Redirect to="/" />
         </Switch>
-      </Layout>
-    </Router>
-  </Provider>
-);
+      );
+    }
+    return (
+      <div>
+        <Layout>{routes}</Layout>
+      </div>
+    );
+  }
+}
 
-export default App;
+App.propTypes = {};
+
+const mapStateToProps = state => ({
+  isAutenticated: state.auth.isAuth
+});
+
+const mapDispatchToProps = {
+  onTryAutoSignup: authCheckState
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);

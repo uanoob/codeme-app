@@ -33,10 +33,10 @@ class MenuAppBar extends React.Component {
     anchorEl: null
   };
 
-  componentDidMount() {
-    const { onAuthCheckState } = this.props;
-    onAuthCheckState();
-  }
+  // componentDidMount() {
+  //   const { onAuthCheckState } = this.props;
+  //   onAuthCheckState();
+  // }
 
   onHandleLogout = event => {
     this.props.onLogout();
@@ -63,7 +63,7 @@ class MenuAppBar extends React.Component {
               CodeMe
             </Typography>
             <FormGroup>
-              <Link to={this.props.onLogined ? '/' : '/login'}>
+              <Link to='/login'>
                 <FormControlLabel
                   control={
                     <Switch

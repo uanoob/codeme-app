@@ -88,13 +88,6 @@ export class RegisterUser extends Component {
     onSignup(name, email, password);
   };
 
-  handleRedirect = () => {
-    const { onLogined } = this.props;
-    if (onLogined) {
-      this.props.history.push('/');
-    }
-  };
-
   render() {
     const { classes, onNameValid, onEmailValid, onPasswordValid } = this.props;
 
@@ -149,7 +142,6 @@ export class RegisterUser extends Component {
             Signup
           </Button>
         </form>
-        {this.handleRedirect()}
       </div>
     );
   }
@@ -160,7 +152,6 @@ RegisterUser.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  onLogined: state.auth.isAuth,
   onNameValid: state.auth.nameValid,
   onEmailValid: state.auth.emailValid,
   onPasswordValid: state.auth.passwordValid
