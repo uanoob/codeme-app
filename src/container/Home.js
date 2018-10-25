@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
+import PostsList from '../components/Posts/PostsList';
 
 const styles = theme => ({
   root: {
@@ -21,7 +22,7 @@ function Home(props) {
     <div>
       <Paper className={classes.root} elevation={1}>
         <Typography variant="h5" component="h3">
-          Home
+          <PostsList />
         </Typography>
       </Paper>
     </div>
