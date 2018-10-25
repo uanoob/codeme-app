@@ -1,11 +1,11 @@
-import React from "react";
-
-import MenuAppBar from "../container/MenuAppBar";
+import React from 'react';
+import './Layout.css';
+import MenuAppBar from '../container/MenuAppBar';
 
 const Layout = props => (
-  <div>
+  <div className="wrap">
     <MenuAppBar />
-    <div className="">{props.children}</div>
+    <div>{props.children}</div>
   </div>
 );
 
