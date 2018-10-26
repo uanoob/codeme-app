@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import {
-  login,
-  setNameInputValid,
-  setPasswordInputValid,
-} from '../store/actions';
+import { login, setNameInputValid, setPasswordInputValid } from '../store/actions';
 import checkValidity from '../utils/utility';
 
 const styles = theme => ({
@@ -43,7 +38,7 @@ export class LoginUser extends Component {
     touchedPassword: false,
   };
 
-  handleChangeName = e => {
+  handleChangeName = (e) => {
     const { onSetNameInputValid } = this.props;
     onSetNameInputValid(checkValidity(e.target.value));
     this.setState({
@@ -52,7 +47,7 @@ export class LoginUser extends Component {
     });
   };
 
-  handleChangePassword = e => {
+  handleChangePassword = (e) => {
     const { onSetPasswordInputValid } = this.props;
     onSetPasswordInputValid(checkValidity(e.target.value));
     this.setState({
@@ -61,7 +56,7 @@ export class LoginUser extends Component {
     });
   };
 
-  submitHandler = e => {
+  submitHandler = (e) => {
     e.preventDefault();
     const { tryLogin } = this.props;
     const { name, password } = this.state;
@@ -114,16 +109,6 @@ export class LoginUser extends Component {
           >
             Login
           </Button>
-          <div align="center">
-            <span>Not registered?</span>
-            <span>
-              <Link to="/register">
-                <Button size="small" color="primary">
-                  SignUp Now!
-                </Button>
-              </Link>
-            </span>
-          </div>
         </form>
       </div>
     );
@@ -139,8 +124,8 @@ LoginUser.propTypes = {
   nameFieldValid: PropTypes.bool.isRequired,
   passwordFieldValid: PropTypes.bool.isRequired,
   onSetNameInputValid: PropTypes.func.isRequired,
+  tryLogin: PropTypes.func.isRequired,
   onSetPasswordInputValid: PropTypes.func.isRequired,
-  isAutenticated: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({

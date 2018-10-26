@@ -4,11 +4,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import {
-  auth,
-  setNameInputValid,
-  setPasswordInputValid,
-} from '../store/actions';
+import { auth, setNameInputValid, setPasswordInputValid } from '../store/actions';
 import checkValidity from '../utils/utility';
 
 const styles = theme => ({
@@ -54,7 +50,7 @@ export class RegisterUser extends Component {
     touchedPassword: false,
   };
 
-  handleChangeName = e => {
+  handleChangeName = (e) => {
     const { onSetNameInputValid } = this.props;
     onSetNameInputValid(checkValidity(e.target.value));
     this.setState({
@@ -63,7 +59,7 @@ export class RegisterUser extends Component {
     });
   };
 
-  handleChangePassword = e => {
+  handleChangePassword = (e) => {
     const { onSetPasswordInputValid } = this.props;
     onSetPasswordInputValid(checkValidity(e.target.value));
     this.setState({
@@ -72,11 +68,11 @@ export class RegisterUser extends Component {
     });
   };
 
-  submitHandler = e => {
+  submitHandler = (e) => {
     e.preventDefault();
     const { tryRegistration } = this.props;
-    const { name, email, password } = this.state;
-    tryRegistration(name, email, password);
+    const { name, password } = this.state;
+    tryRegistration(name, password);
   };
 
   render() {
