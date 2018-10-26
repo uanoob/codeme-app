@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../axios';
 
 import {
   LOGIN_START,
@@ -11,6 +11,8 @@ import {
   AUTH_FAIL,
 } from './types';
 
+import { getUserProfile } from '.';
+
 const loginStart = () => ({
   type: LOGIN_START,
 });
@@ -20,7 +22,7 @@ const loginSuccess = token => ({
   token,
 });
 
-const isLogined = flag => ({
+export const isLogined = flag => ({
   type: IS_LOGINED,
   isLogined: flag,
 });
@@ -34,28 +36,30 @@ const logoutHandler = () => ({
   type: LOGOUT,
 });
 
-export const logout = () => dispatch => {
+export const logout = () => (dispatch) => {
   localStorage.removeItem('token');
+  axios.defaults.headers.common = {};
   dispatch(logoutHandler());
   dispatch(isLogined(false));
 };
 
-export const login = (name, password) => dispatch => {
+export const login = (name, password) => (dispatch) => {
   dispatch(loginStart());
   const loginData = {
-    login: `${name}`,
-    password: `${password}`,
+    login: name,
+    password,
   };
-  const url = 'https://incode-blog-internship.herokuapp.com/login';
   axios
-    .post(url, loginData)
-    .then(response => {
-      console.log(response);
+    .post('/login', loginData)
+    .then((response) => {
       localStorage.setItem('token', response.data.token);
+
+      axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
+
       dispatch(loginSuccess(response.data.token));
-      dispatch(isLogined(true));
+      dispatch(getUserProfile());
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch(loginFail(err));
     });
 };
@@ -74,32 +78,32 @@ const authFail = error => ({
   error,
 });
 
-export const auth = (name, password) => dispatch => {
+export const auth = (name, password) => (dispatch) => {
   dispatch(authStart());
   const authData = {
-    login: `${name}`,
-    password: `${password}`,
+    login: name,
+    password,
   };
-  const url = 'https://incode-blog-internship.herokuapp.com/auth';
   axios
-    .post(url, authData)
-    .then(response => {
-      console.log(response);
+    .post('/auth', authData)
+    .then((response) => {
       localStorage.setItem('token', response.data.token);
+      // assign token to headers;
+      axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
+
       dispatch(authSuccess(response.data.token));
-      dispatch(isLogined(response.data.success));
+      dispatch(getUserProfile());
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch(authFail(err));
     });
 };
 
-export const authCheckState = () => dispatch => {
+export const authCheckState = () => (dispatch) => {
   const token = localStorage.getItem('token');
   if (!token) {
     dispatch(logout());
   } else {
-    dispatch(loginSuccess(token));
-    dispatch(isLogined(true));
+    dispatch(getUserProfile());
   }
 };

@@ -1,4 +1,6 @@
-export { auth, logout, login, authCheckState } from './authentication';
+export {
+  auth, isLogined, logout, login, authCheckState,
+} from './authentication';
 
 export { setNameInputValid, setPasswordInputValid } from './validation';
 

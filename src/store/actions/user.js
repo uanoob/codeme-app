@@ -1,5 +1,6 @@
-import axios from 'axios';
+import axios from '../../axios';
 import { GET_USER_START, GET_USER_SUCCESS, GET_USER_FAIL } from './types';
+import { isLogined } from '.';
 
 export const getUserStart = () => ({
   type: GET_USER_START,
@@ -15,19 +16,16 @@ export const getUserFail = error => ({
   error,
 });
 
-export const getUserProfile = token => dispatch => {
+export const getUserProfile = () => (dispatch) => {
   dispatch(getUserStart());
-  console.log(token);
-  const instance = axios.create({
-    headers: { 'Authorization': "bearer " + token },
-  });
-  const url = 'https://incode-blog-internship.herokuapp.com/user';
-  instance
-    .get(url)
-    .then(response => {
+
+  axios
+    .get('/user')
+    .then((response) => {
       dispatch(getUserSuccess(response.data));
+      dispatch(isLogined(true));
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch(getUserFail(err));
     });
 };
