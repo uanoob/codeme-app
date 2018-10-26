@@ -43,13 +43,14 @@ export const logout = () => dispatch => {
 export const login = (name, password) => dispatch => {
   dispatch(loginStart());
   const loginData = {
-    name,
-    password,
+    login: `${name}`,
+    password: `${password}`,
   };
-  const url = 'http://localhost:8000/api/auth/login';
+  const url = 'https://incode-blog-internship.herokuapp.com/login';
   axios
     .post(url, loginData)
     .then(response => {
+      console.log(response);
       localStorage.setItem('token', response.data.token);
       dispatch(loginSuccess(response.data.token));
       dispatch(isLogined(true));
@@ -76,13 +77,14 @@ const authFail = error => ({
 export const auth = (name, password) => dispatch => {
   dispatch(authStart());
   const authData = {
-    name,
-    password,
+    login: `${name}`,
+    password: `${password}`,
   };
-  const url = 'http://localhost:8000/api/auth/register';
+  const url = 'https://incode-blog-internship.herokuapp.com/auth';
   axios
     .post(url, authData)
     .then(response => {
+      console.log(response);
       localStorage.setItem('token', response.data.token);
       dispatch(authSuccess(response.data.token));
       dispatch(isLogined(response.data.success));

@@ -38,7 +38,7 @@ class MenuAppBar extends React.Component {
     onLogout();
   };
 
-  handleMenu = (event) => {
+  handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -61,7 +61,9 @@ class MenuAppBar extends React.Component {
             <FormGroup>
               <Link to="/login">
                 <FormControlLabel
-                  control={<Switch checked={isAutenticated} aria-label="LoginSwitch" />}
+                  control={
+                    <Switch checked={isAutenticated} aria-label="LoginSwitch" />
+                  }
                   label={isAutenticated ? 'Logout' : 'Login'}
                   onClick={isAutenticated ? this.onHandleLogout : null}
                 />

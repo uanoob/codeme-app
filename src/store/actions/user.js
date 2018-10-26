@@ -15,18 +15,19 @@ export const getUserFail = error => ({
   error,
 });
 
-export const getUserProfile = token => (dispatch) => {
+export const getUserProfile = token => dispatch => {
   dispatch(getUserStart());
+  console.log(token);
   const instance = axios.create({
-    headers: { 'x-access-token': token },
+    headers: { 'Authorization': "bearer " + token },
   });
-  const url = 'http://localhost:8000/api/auth/me';
+  const url = 'https://incode-blog-internship.herokuapp.com/user';
   instance
     .get(url)
-    .then((response) => {
+    .then(response => {
       dispatch(getUserSuccess(response.data));
     })
-    .catch((err) => {
-      dispatch(getUserFail(err.response.data.error));
+    .catch(err => {
+      dispatch(getUserFail(err));
     });
 };
