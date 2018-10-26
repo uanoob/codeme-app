@@ -1,6 +1,6 @@
 import axios from '../../axios';
 import { GET_USER_START, GET_USER_SUCCESS, GET_USER_FAIL } from './types';
-import { isLogined } from '.';
+import { isLogined } from './root.action';
 
 export const getUserStart = () => ({
   type: GET_USER_START,

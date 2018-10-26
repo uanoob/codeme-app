@@ -5,12 +5,11 @@ import {
   Route, Switch, Redirect, withRouter,
 } from 'react-router-dom';
 import './App.css';
-import Layout from './hoc/Layout';
-import Home from './container/Home';
-import LoginUser from './components/LoginUser';
-import RegisterUser from './components/RegisterUser';
-import ProfileUser from './components/ProfileUser';
-import { authCheckState } from './store/actions';
+import Main from './components/main/Main';
+import Home from './components/Home';
+import Login from './containers/auth/Login';
+import Register from './containers/auth/Register';
+import { authCheckState } from './store/actions/root.action';
 
 class App extends Component {
   componentDidMount() {
@@ -22,8 +21,8 @@ class App extends Component {
     const { isAutenticated } = this.props;
     let routes = (
       <Switch>
-        <Route path="/login" component={LoginUser} />
-        <Route path="/register" component={RegisterUser} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
         <Route exact path="/" component={Home} />
         <Redirect to="/" />
       </Switch>
@@ -32,16 +31,12 @@ class App extends Component {
       routes = (
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/profile" component={ProfileUser} />
+          {/* <Route exact path="/profile" component={ProfileUser} /> */}
           <Redirect to="/" />
         </Switch>
       );
     }
-    return (
-      <div>
-        <Layout>{routes}</Layout>
-      </div>
-    );
+    return <Main>{routes}</Main>;
   }
 }
 

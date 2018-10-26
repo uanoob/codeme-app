@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { login, setNameInputValid, setPasswordInputValid } from '../store/actions';
-import checkValidity from '../utils/utility';
+import { login, setNameInputValid, setPasswordInputValid } from '../../store/actions/root.action';
+import checkValidity from '../../utils/utility';
 
 const styles = theme => ({
   typography: {
@@ -30,7 +30,7 @@ const styles = theme => ({
   },
 });
 
-export class LoginUser extends Component {
+export class LoginUserComponent extends Component {
   state = {
     name: '',
     password: '',
@@ -58,9 +58,11 @@ export class LoginUser extends Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    const { tryLogin } = this.props;
+
+    const { handleLogin } = this.props;
+
     const { name, password } = this.state;
-    tryLogin(name, password);
+    handleLogin(name, password);
   };
 
   render() {
@@ -115,7 +117,7 @@ export class LoginUser extends Component {
   }
 }
 
-LoginUser.propTypes = {
+LoginUserComponent.propTypes = {
   classes: PropTypes.shape({
     container: PropTypes.string.isRequired,
     textField: PropTypes.string.isRequired,
@@ -124,23 +126,25 @@ LoginUser.propTypes = {
   nameFieldValid: PropTypes.bool.isRequired,
   passwordFieldValid: PropTypes.bool.isRequired,
   onSetNameInputValid: PropTypes.func.isRequired,
-  tryLogin: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired,
   onSetPasswordInputValid: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  isAutenticated: state.auth.isLogined,
+  isLogined: state.auth.isLogined,
   nameFieldValid: state.validation.isNameInputValid,
   passwordFieldValid: state.validation.isPasswordInputValid,
 });
 
 const mapDispatchToProps = {
-  tryLogin: login,
+  handleLogin: login,
   onSetNameInputValid: setNameInputValid,
   onSetPasswordInputValid: setPasswordInputValid,
 };
 
-export default connect(
+const LoginUser = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(LoginUser));
+)(withStyles(styles)(LoginUserComponent));
+
+export default LoginUser;

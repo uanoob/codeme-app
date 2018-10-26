@@ -11,7 +11,7 @@ import {
   AUTH_FAIL,
 } from './types';
 
-import { getUserProfile } from '.';
+import { getUserProfile } from './root.action';
 
 const loginStart = () => ({
   type: LOGIN_START,

@@ -6,7 +6,7 @@ const initialState = {
   error: null,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case IS_NAME_INPUT_VALID:
       return {

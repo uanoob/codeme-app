@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import { logout } from '../store/actions';
+import { logout } from '../../store/actions/root.action';
 
 const styles = {
   root: {
@@ -29,7 +29,7 @@ const styles = {
   },
 };
 
-class MenuAppBar extends React.Component {
+class Header extends React.Component {
   state = {};
 
   onHandleLogout = () => {
@@ -92,7 +92,7 @@ class MenuAppBar extends React.Component {
   }
 }
 
-MenuAppBar.propTypes = {
+Header.propTypes = {
   classes: PropTypes.shape({ root: PropTypes.string.isRequired }).isRequired,
   onLogout: PropTypes.func.isRequired,
   isAutenticated: PropTypes.bool.isRequired,
@@ -109,4 +109,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(MenuAppBar));
+)(withStyles(styles)(Header));

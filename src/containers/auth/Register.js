@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { auth, setNameInputValid, setPasswordInputValid } from '../store/actions';
-import checkValidity from '../utils/utility';
+import { auth, setNameInputValid, setPasswordInputValid } from '../../store/actions/root.action';
+import checkValidity from '../../utils/utility';
 
 const styles = theme => ({
   typography: {
@@ -42,7 +42,7 @@ const styles = theme => ({
   },
 });
 
-export class RegisterUser extends Component {
+export class RegisterUserComponent extends Component {
   state = {
     name: '',
     password: '',
@@ -124,7 +124,7 @@ export class RegisterUser extends Component {
   }
 }
 
-RegisterUser.propTypes = {
+RegisterUserComponent.propTypes = {
   classes: PropTypes.shape({
     container: PropTypes.string.isRequired,
     textField: PropTypes.string.isRequired,
@@ -152,7 +152,9 @@ const mapDispatchToProps = {
   onSetPasswordInputValid: setPasswordInputValid,
 };
 
-export default connect(
+const RegisterUser = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(RegisterUser));
+)(withStyles(styles)(RegisterUserComponent));
+
+export default RegisterUser;

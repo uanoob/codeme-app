@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 
-import PostItem from './PostItem';
-
 const styles = theme => ({
   root: {
     width: '100%',
@@ -25,9 +23,7 @@ class PostsList extends React.Component {
 
     return (
       <div className={classes.root}>
-        <List component="nav" subheader={<ListSubheader component="div">Posts</ListSubheader>}>
-          <PostItem />
-        </List>
+        <List component="nav" subheader={<ListSubheader component="div">Posts</ListSubheader>} />
       </div>
     );
   }
