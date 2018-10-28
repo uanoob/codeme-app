@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { login, setNameInputValid, setPasswordInputValid } from '../../store/actions/root.action';
-import checkValidity from '../../utils/utility';
+import checkValidity from '../../utils/validation.utils';
 
 const styles = theme => ({
   typography: {
@@ -69,50 +69,47 @@ export class LoginUserComponent extends Component {
     const { nameFieldValid, passwordFieldValid } = this.props;
     const { name, touchedName, touchedPassword } = this.state;
     const { classes } = this.props;
-
     return (
-      <div>
-        <form
-          className={classes.container}
-          noValidate
-          autoComplete="off"
-          onSubmit={this.submitHandler}
-        >
-          <TextField
-            id="outlined-name-input"
-            label="Name"
-            className={classes.textField}
-            name="name"
-            value={name}
-            onChange={this.handleChangeName}
-            autoComplete="on"
-            margin="normal"
-            variant="outlined"
-            error={!nameFieldValid && touchedName}
-          />
+      <form
+        className={classes.container}
+        noValidate
+        autoComplete="off"
+        onSubmit={this.submitHandler}
+      >
+        <TextField
+          id="outlined-name-input"
+          label="Name"
+          className={classes.textField}
+          name="name"
+          value={name}
+          onChange={this.handleChangeName}
+          autoComplete="on"
+          margin="normal"
+          variant="outlined"
+          error={!nameFieldValid && touchedName}
+        />
 
-          <TextField
-            id="outlined-password-input"
-            label="Password"
-            className={classes.textField}
-            type="password"
-            onChange={this.handleChangePassword}
-            autoComplete="on"
-            margin="normal"
-            variant="outlined"
-            error={!passwordFieldValid && touchedPassword}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            disabled={!(nameFieldValid && passwordFieldValid)}
-          >
-            Login
-          </Button>
-        </form>
-      </div>
+        <TextField
+          id="outlined-password-input"
+          label="Password"
+          className={classes.textField}
+          type="password"
+          onChange={this.handleChangePassword}
+          autoComplete="on"
+          margin="normal"
+          variant="outlined"
+          error={!passwordFieldValid && touchedPassword}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          disabled={!(nameFieldValid && passwordFieldValid)}
+        >
+          Login
+        </Button>
+      </form>
     );
   }
 }

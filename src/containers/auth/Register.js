@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { auth, setNameInputValid, setPasswordInputValid } from '../../store/actions/root.action';
-import checkValidity from '../../utils/utility';
+import checkValidity from '../../utils/validation.utils';
 
 const styles = theme => ({
   typography: {
