@@ -14,3 +14,6 @@ export const GET_USER_FAIL = '[user] get user fail';
 export const GET_CATEGORY_START = '[category] get category start';
 export const GET_CATEGORY_SUCCESS = '[category] get category success';
 export const GET_CATEGORY_FAIL = '[category] get category fail';
+export const GET_POST_START = '[post] get post start';
+export const GET_POST_SUCCESS = '[post] get post success';
+export const GET_POST_FAIL = '[post] get post fail';

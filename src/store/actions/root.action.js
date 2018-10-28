@@ -7,3 +7,5 @@ export { setNameInputValid, setPasswordInputValid } from './validation.action';
 export { getUserProfile } from './user.action';
 
 export { getCategories } from './category.action';
+
+export { getPosts } from './post.action';
