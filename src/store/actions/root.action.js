@@ -8,4 +8,4 @@ export { getUserProfile } from './user.action';
 
 export { getCategories } from './category.action';
 
-export { getPosts } from './post.action';
+export { getPosts, getPostsByCategory } from './post.action';

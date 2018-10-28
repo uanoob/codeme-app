@@ -17,3 +17,6 @@ export const GET_CATEGORY_FAIL = '[category] get category fail';
 export const GET_POST_START = '[post] get post start';
 export const GET_POST_SUCCESS = '[post] get post success';
 export const GET_POST_FAIL = '[post] get post fail';
+export const GET_POST_BY_CATEGORY_START = '[post] get post by category start';
+export const GET_POST_BY_CATEGORY_SUCCESS = '[post] get post by category success';
+export const GET_POST_BY_CATEGORY_FAIL = '[post] get post by category fail';
