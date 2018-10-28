@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import Post from './Post';
-import { getPosts } from '../../store/actions/root.action';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import PostTemplate from '../../components/postTemplate/PostTemplate';
+import { getPosts, getPostById, getCommentsByPostId } from '../../store/actions/root.action';
 
 const styles = theme => ({
   root: {
@@ -26,17 +29,20 @@ class Posts extends React.Component {
   }
 
   handleSelectedPost = (id) => {
-    console.log(id);
+    const { onGetPostById, onGetCommentsByPostId, history } = this.props;
+    onGetPostById(id);
+    onGetCommentsByPostId(id);
+    history.push('/post');
   };
 
   render() {
     const { posts, classes } = this.props;
 
-    return posts ? (
+    return posts.length !== 0 ? (
       <div className={classes.root}>
         <List component="nav">
           {posts.map(post => (
-            <Post
+            <PostTemplate
               key={post.id}
               id={post.id}
               title={post.title}
@@ -50,7 +56,15 @@ class Posts extends React.Component {
           ))}
         </List>
       </div>
-    ) : null;
+    ) : (
+      <div className={classes.root}>
+        <List component="nav">
+          <ListItem>
+            <ListItemText primary="No post here  :(" />
+          </ListItem>
+        </List>
+      </div>
+    );
   }
 }
 
@@ -60,6 +74,8 @@ Posts.propTypes = {
     nested: PropTypes.string.isRequired,
   }).isRequired,
   onGetPosts: PropTypes.func.isRequired,
+  onGetPostById: PropTypes.func.isRequired,
+  onGetCommentsByPostId: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -71,6 +87,7 @@ Posts.propTypes = {
       category_name: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -79,11 +96,15 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onGetPosts: getPosts,
+  onGetPostById: getPostById,
+  onGetCommentsByPostId: getCommentsByPostId,
 };
 
 export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Posts),
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps,
+    )(Posts),
+  ),
 );
