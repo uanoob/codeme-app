@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Category from './Category';
-import { getCategories } from '../../store/actions/root.action';
+import { getCategories, getPostsByCategory } from '../../store/actions/root.action';
 
 const styles = theme => ({
   root: {
@@ -24,9 +24,10 @@ class Categories extends React.Component {
     onGetCategories();
   }
 
-  handleSelectedCategory = (event, id) => {
-    this.setState({ selectedIndex: id });
-    // console.log(id);
+  handleSelectedCategory = (index, title) => {
+    this.setState({ selectedIndex: index });
+    const { onGetPostsByCategory } = this.props;
+    onGetPostsByCategory(title);
   };
 
   render() {
@@ -43,7 +44,7 @@ class Categories extends React.Component {
               title={category.title}
               description={category.description}
               selected={selectedIndex === category.id}
-              onClick={event => this.handleSelectedCategory(event, category.id)}
+              onClick={() => this.handleSelectedCategory(category.id, category.title)}
             />
           ))}
         </List>
@@ -57,6 +58,7 @@ Categories.propTypes = {
     root: PropTypes.string.isRequired,
   }).isRequired,
   onGetCategories: PropTypes.func.isRequired,
+  onGetPostsByCategory: PropTypes.func.isRequired,
   categories: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -73,6 +75,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onGetCategories: getCategories,
+  onGetPostsByCategory: getPostsByCategory,
 };
 
 export default withStyles(styles)(
