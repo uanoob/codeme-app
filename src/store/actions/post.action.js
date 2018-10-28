@@ -6,6 +6,9 @@ import {
   GET_POST_BY_CATEGORY_START,
   GET_POST_BY_CATEGORY_SUCCESS,
   GET_POST_BY_CATEGORY_FAIL,
+  GET_POST_BY_ID_START,
+  GET_POST_BY_ID_SUCCESS,
+  GET_POST_BY_ID_FAIL,
 } from './types';
 
 const getPostStart = () => ({
@@ -53,10 +56,36 @@ export const getPostsByCategory = name => (dispatch) => {
   axios
     .get(`/post/category/${name}`)
     .then((response) => {
-      console.log(response.data);
       dispatch(getPostByCategorySuccess(response.data.posts));
     })
     .catch((err) => {
       dispatch(getPostByCategoryFail(err));
+    });
+};
+
+const getPostByIdStart = () => ({
+  type: GET_POST_BY_ID_START,
+});
+
+const getPostByIdSuccess = post => ({
+  type: GET_POST_BY_ID_SUCCESS,
+  post,
+});
+
+const getPostByIdFail = error => ({
+  type: GET_POST_BY_ID_FAIL,
+  error,
+});
+
+export const getPostById = id => (dispatch) => {
+  dispatch(getPostByIdStart());
+  axios
+    .get(`/post/${id}`)
+    .then((response) => {
+      console.log(response.data);
+      dispatch(getPostByIdSuccess(response.data.data));
+    })
+    .catch((err) => {
+      dispatch(getPostByIdFail(err));
     });
 };

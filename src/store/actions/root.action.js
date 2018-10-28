@@ -8,4 +8,6 @@ export { getUserProfile } from './user.action';
 
 export { getCategories } from './category.action';
 
-export { getPosts, getPostsByCategory } from './post.action';
+export { getPosts, getPostsByCategory, getPostById } from './post.action';
+
+export { getCommentsByPostId } from './comment.action';
