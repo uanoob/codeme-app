@@ -1,36 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 4,
-  },
-});
+const Post = ({
+  id, title, body, authorName, categoryName, onClick,
+}) => (
+  <ListItem button id={id} onClick={onClick}>
+    <ListItemText primary={title} />
+    <ListItemText primary={body} />
+    <ListItemText primary={authorName} />
+    <ListItemText primary={categoryName} />
+  </ListItem>
+);
 
-class PostsList extends React.Component {
-  state = {};
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <List component="nav" subheader={<ListSubheader component="div">Posts</ListSubheader>} />
-      </div>
-    );
-  }
-}
-
-PostsList.propTypes = {
-  classes: PropTypes.object.isRequired,
+Post.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
+  authorName: PropTypes.string.isRequired,
+  categoryName: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(PostsList);
+export default Post;
