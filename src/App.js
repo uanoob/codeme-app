@@ -6,10 +6,10 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import Layout from './hoc/Layout';
-import Main from './components/main/Main';
-// import Home from './components/Home';
-import Login from './containers/auth/Login';
-import Register from './containers/auth/Register';
+import MainPage from './components/main/MainPage';
+import LoginPage from './containers/auth/LoginPage';
+import RegisterPage from './containers/auth/RegisterPage';
+import PostPage from './containers/post/PostPage';
 import { authCheckState } from './store/actions/root.action';
 
 class App extends Component {
@@ -22,16 +22,16 @@ class App extends Component {
     const { isAutenticated } = this.props;
     let routes = (
       <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        {/* <Route exact path="/" component={Login} /> */}
+        <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
         <Redirect to="/login" />
       </Switch>
     );
     if (isAutenticated) {
       routes = (
         <Switch>
-          <Route exact path="/main" component={Main} />
+          <Route exact path="/main" component={MainPage} />
+          <Route exact path="/post" component={PostPage} />
           {/* <Route exact path="/profile" component={ProfileUser} /> */}
           <Redirect to="/main" />
         </Switch>

@@ -139,9 +139,9 @@ const mapDispatchToProps = {
   onSetPasswordInputValid: setPasswordInputValid,
 };
 
-const LoginUser = connect(
+const LoginPage = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(withStyles(styles)(LoginUserComponent));
 
-export default LoginUser;
+export default LoginPage;
