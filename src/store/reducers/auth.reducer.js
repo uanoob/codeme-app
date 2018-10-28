@@ -36,6 +36,7 @@ export default function (state = initialState, action) {
     case LOGIN_FAIL:
       return {
         ...state,
+        loading: false,
         error: action.error,
       };
     case LOGOUT:
@@ -52,17 +53,21 @@ export default function (state = initialState, action) {
     case AUTH_START:
       return {
         ...state,
+        loading: true,
         error: null,
       };
     case AUTH_SUCCESS:
       return {
         ...state,
         token: action.token,
+        loading: false,
+        loaded: true,
         error: null,
       };
     case AUTH_FAIL:
       return {
         ...state,
+        loading: false,
         error: action.error,
       };
     default:
