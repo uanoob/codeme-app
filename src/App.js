@@ -5,8 +5,9 @@ import {
   Route, Switch, Redirect, withRouter,
 } from 'react-router-dom';
 import './App.css';
+import Layout from './hoc/Layout';
 import Main from './components/main/Main';
-import Home from './components/Home';
+// import Home from './components/Home';
 import Login from './containers/auth/Login';
 import Register from './containers/auth/Register';
 import { authCheckState } from './store/actions/root.action';
@@ -18,35 +19,37 @@ class App extends Component {
   }
 
   render() {
-    const { isAutenticated } = this.props;
+    const { isAutenticated, isLoaded } = this.props;
     let routes = (
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route exact path="/" component={Home} />
-        <Redirect to="/" />
+        {/* <Route exact path="/" component={Login} /> */}
+        <Redirect to="/login" />
       </Switch>
     );
-    if (isAutenticated) {
+    if (isAutenticated && isLoaded) {
       routes = (
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={Main} />
           {/* <Route exact path="/profile" component={ProfileUser} /> */}
           <Redirect to="/" />
         </Switch>
       );
     }
-    return <Main>{routes}</Main>;
+    return <Layout>{routes}</Layout>;
   }
 }
 
 App.propTypes = {
   onTryAutoSignup: PropTypes.func.isRequired,
   isAutenticated: PropTypes.bool.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   isAutenticated: state.auth.isLogined,
+  isLoaded: state.auth.loaded,
 });
 
 const mapDispatchToProps = {
