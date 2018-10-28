@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   render() {
-    const { isAutenticated, isLoaded } = this.props;
+    const { isAutenticated } = this.props;
     let routes = (
       <Switch>
         <Route path="/login" component={Login} />
@@ -28,12 +28,12 @@ class App extends Component {
         <Redirect to="/login" />
       </Switch>
     );
-    if (isAutenticated && isLoaded) {
+    if (isAutenticated) {
       routes = (
         <Switch>
-          <Route exact path="/" component={Main} />
+          <Route exact path="/main" component={Main} />
           {/* <Route exact path="/profile" component={ProfileUser} /> */}
-          <Redirect to="/" />
+          <Redirect to="/main" />
         </Switch>
       );
     }
@@ -44,12 +44,10 @@ class App extends Component {
 App.propTypes = {
   onTryAutoSignup: PropTypes.func.isRequired,
   isAutenticated: PropTypes.bool.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   isAutenticated: state.auth.isLogined,
-  isLoaded: state.auth.loaded,
 });
 
 const mapDispatchToProps = {
