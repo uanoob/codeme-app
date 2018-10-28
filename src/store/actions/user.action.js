@@ -18,7 +18,6 @@ export const getUserFail = error => ({
 
 export const getUserProfile = () => (dispatch) => {
   dispatch(getUserStart());
-
   axios
     .get('/user')
     .then((response) => {
