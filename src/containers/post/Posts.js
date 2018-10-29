@@ -21,12 +21,16 @@ const styles = theme => ({
 });
 
 class Posts extends React.Component {
-  state = {};
+  state = { expanded: false };
 
   componentDidMount() {
     const { onGetPosts } = this.props;
     onGetPosts();
   }
+
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
 
   handleSelectedPost = (id) => {
     const { onGetPostById, onGetCommentsByPostId, history } = this.props;
@@ -52,6 +56,8 @@ class Posts extends React.Component {
               categoryId={post.category_id}
               categoryName={post.category_name}
               onClick={() => this.handleSelectedPost(post.id)}
+              handleExpandClick={() => this.handleExpandClick()}
+              expanded
             />
           ))}
         </List>
