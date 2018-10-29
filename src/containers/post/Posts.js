@@ -41,6 +41,7 @@ class Posts extends React.Component {
 
   render() {
     const { posts, classes } = this.props;
+    const { expanded } = this.state;
 
     return posts.length !== 0 ? (
       <div className={classes.root}>
@@ -55,9 +56,9 @@ class Posts extends React.Component {
               authorName={post.author_name}
               categoryId={post.category_id}
               categoryName={post.category_name}
-              onClick={() => this.handleSelectedPost(post.id)}
+              handleSelectedPost={() => this.handleSelectedPost(post.id)}
               handleExpandClick={() => this.handleExpandClick()}
-              expanded
+              expanded={expanded}
             />
           ))}
         </List>

@@ -46,7 +46,15 @@ const styles = theme => ({
 });
 
 const PostTemplate = (props) => {
-  const { classes } = props;
+  const {
+    classes,
+    expanded,
+    handleSelectedPost,
+    handleExpandClick,
+    authorName,
+    categoryName,
+    body,
+  } = props;
 
   return (
     <Card className={classes.card}>
@@ -58,17 +66,13 @@ const PostTemplate = (props) => {
 )}
         action={(
           <IconButton>
-            <MoreVertIcon />
+            <MoreVertIcon onClick={handleSelectedPost} />
           </IconButton>
 )}
-        title={props.authorName}
-        subheader={props.categoryName}
+        title={authorName}
+        subheader={categoryName}
       />
-      <CardContent>
-        <Typography component="p">
-          {props.body}
-        </Typography>
-      </CardContent>
+
       <CardActions className={classes.actions} disableActionSpacing>
         <IconButton aria-label="Add to favorites">
           <FavoriteIcon />
@@ -78,24 +82,20 @@ const PostTemplate = (props) => {
         </IconButton>
         <IconButton
           className={classnames(classes.expand, {
-            [classes.expandOpen]: props.expanded,
+            [classes.expandOpen]: expanded,
           })}
-          onClick={props.handleExpandClick}
-          aria-expanded={props.expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
           aria-label="Show more"
         >
           <ExpandMoreIcon />
         </IconButton>
       </CardActions>
-      <Collapse in={props.expanded} timeout="auto" unmountOnExit>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography>
+          <CardContent>
+            <Typography component="p">{body}</Typography>
+          </CardContent>
         </CardContent>
       </Collapse>
     </Card>
@@ -104,6 +104,12 @@ const PostTemplate = (props) => {
 
 PostTemplate.propTypes = {
   classes: PropTypes.object.isRequired,
+  expanded: PropTypes.bool.isRequired,
+  authorName: PropTypes.string.isRequired,
+  categoryName: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
+  handleSelectedPost: PropTypes.func.isRequired,
+  handleExpandClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(PostTemplate);

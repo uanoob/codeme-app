@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
@@ -16,9 +16,14 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Comment from '../comment/Comment';
 
 const styles = theme => ({
   card: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    margin: 'auto',
     maxWidth: 400,
   },
   media: {
@@ -54,29 +59,28 @@ class RecipeReviewCard extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, post, comments } = this.props;
+    const { expanded } = this.state;
 
-    return (
+    return post ? (
       <Card className={classes.card}>
         <CardHeader
-          avatar={
+          avatar={(
             <Avatar aria-label="Recipe" className={classes.avatar}>
               R
             </Avatar>
-          }
-          action={
+)}
+          action={(
             <IconButton>
               <MoreVertIcon />
             </IconButton>
-          }
-          title="Shrimp and Chorizo Paella"
-          subheader="September 14, 2016"
+)}
+          title={post.author_name}
+          subheader={post.title}
         />
         <CardContent>
-          <Typography component="p">
-            This impressive paella is a perfect party dish and a fun meal to cook together with your
-            guests. Add 1 cup of frozen peas along with the mussels, if you like.
-          </Typography>
+          <Typography component="p">{post.body}</Typography>
+          <Typography component="p">{post.category_name}</Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Add to favorites">
@@ -87,28 +91,28 @@ class RecipeReviewCard extends React.Component {
           </IconButton>
           <IconButton
             className={classnames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded,
+              [classes.expandOpen]: expanded,
             })}
             onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
+            aria-expanded={expanded}
             aria-label="Show more"
           >
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>Method:</Typography>
-            <Typography paragraph>
-              Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-            </Typography>
-            <Typography>
-              Set aside off of the heat to let rest for 10 minutes, and then serve.
-            </Typography>
+            {comments.map(comment => (
+              <div key={comment.id}>
+                <Typography paragraph>{comment.author_name}</Typography>
+                <Typography paragraph>{comment.body}</Typography>
+              </div>
+            ))}
           </CardContent>
         </Collapse>
+        <Comment />
       </Card>
-    );
+    ) : null;
   }
 }
 
@@ -116,4 +120,15 @@ RecipeReviewCard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(RecipeReviewCard);
+const mapStateToProps = state => ({
+  post: state.posts.post,
+  comments: state.comments.comments,
+});
+const mapDispatchToProps = {};
+
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(RecipeReviewCard),
+);

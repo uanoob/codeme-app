@@ -33,9 +33,7 @@ function CSSGrid(props) {
           </Paper>
         </Grid>
         <Grid item xs={8}>
-          <Paper className={classes.paper}>
-            <Posts />
-          </Paper>
+          <Posts />
         </Grid>
       </Grid>
     </div>
