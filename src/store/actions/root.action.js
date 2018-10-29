@@ -1,5 +1,5 @@
 export {
-  auth, isLogined, logout, login, authCheckState,
+  auth, isLogined, logout, login, getUserByToken, authCheckState,
 } from './auth.action';
 
 export {
@@ -11,9 +11,7 @@ export {
   setBodyInputValid,
 } from './validation.action';
 
-export { getUserProfile } from './user.action';
-
-export { getCategories } from './category.action';
+export { getAllCategories, getSingleCategoryById } from './category.action';
 
 export {
   getPosts, getPostsByCategory, getPostById, getAllPostsByAuthorId,

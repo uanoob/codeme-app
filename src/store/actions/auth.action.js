@@ -9,9 +9,42 @@ import {
   AUTH_START,
   AUTH_SUCCESS,
   AUTH_FAIL,
+  GET_USER_BY_TOKEN_START,
+  GET_USER_BY_TOKEN_SUCCESS,
+  GET_USER_BY_TOKEN_FAIL,
 } from './types';
 
-import { getUserProfile } from './root.action';
+export const isLogined = flag => ({
+  type: IS_LOGINED,
+  isLogined: flag,
+});
+
+export const getUserByTokenStart = () => ({
+  type: GET_USER_BY_TOKEN_START,
+});
+
+export const getUserByTokenSuccess = user => ({
+  type: GET_USER_BY_TOKEN_SUCCESS,
+  user,
+});
+
+export const getUserByTokenFail = error => ({
+  type: GET_USER_BY_TOKEN_FAIL,
+  error,
+});
+
+export const getUserByToken = () => (dispatch) => {
+  dispatch(getUserByTokenStart());
+  axios
+    .get('/user')
+    .then((response) => {
+      dispatch(getUserByTokenSuccess(response.data));
+      dispatch(isLogined(true));
+    })
+    .catch((err) => {
+      dispatch(getUserByTokenFail(err));
+    });
+};
 
 const loginStart = () => ({
   type: LOGIN_START,
@@ -20,11 +53,6 @@ const loginStart = () => ({
 const loginSuccess = token => ({
   type: LOGIN_SUCCESS,
   token,
-});
-
-export const isLogined = flag => ({
-  type: IS_LOGINED,
-  isLogined: flag,
 });
 
 const loginFail = error => ({
@@ -57,7 +85,7 @@ export const login = (name, password) => (dispatch) => {
       axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
       dispatch(loginSuccess(response.data.token));
-      dispatch(getUserProfile());
+      dispatch(getUserByToken());
     })
     .catch((err) => {
       dispatch(loginFail(err));
@@ -92,7 +120,7 @@ export const auth = (name, password) => (dispatch) => {
       axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
       dispatch(authSuccess(response.data.token));
-      dispatch(getUserProfile());
+      dispatch(getUserByToken());
     })
     .catch((err) => {
       dispatch(authFail(err));
@@ -104,6 +132,6 @@ export const authCheckState = () => (dispatch) => {
   if (!token) {
     dispatch(logout());
   } else {
-    dispatch(getUserProfile());
+    dispatch(getUserByToken());
   }
 };
