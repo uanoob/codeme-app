@@ -9,6 +9,9 @@ import {
   GET_POST_BY_ID_START,
   GET_POST_BY_ID_SUCCESS,
   GET_POST_BY_ID_FAIL,
+  GET_ALL_POSTS_BY_AUTHOR_ID_START,
+  GET_ALL_POSTS_BY_AUTHOR_ID_SUCCESS,
+  GET_ALL_POSTS_BY_AUTHOR_ID_FAIL,
 } from './types';
 
 const getPostStart = () => ({
@@ -86,5 +89,32 @@ export const getPostById = id => (dispatch) => {
     })
     .catch((err) => {
       dispatch(getPostByIdFail(err));
+    });
+};
+
+const getAllPostsByAuthorIdStart = () => ({
+  type: GET_ALL_POSTS_BY_AUTHOR_ID_START,
+});
+
+const getAllPostsByAuthorIdSuccess = posts => ({
+  type: GET_ALL_POSTS_BY_AUTHOR_ID_SUCCESS,
+  posts,
+});
+
+const getAllPostsByAuthorIdFail = error => ({
+  type: GET_ALL_POSTS_BY_AUTHOR_ID_FAIL,
+  error,
+});
+
+export const getAllPostsByAuthorId = id => (dispatch) => {
+  dispatch(getAllPostsByAuthorIdStart());
+  axios
+    .get(`/post/author/${id}`)
+    .then((response) => {
+      console.log(response.data);
+      dispatch(getAllPostsByAuthorIdSuccess(response.data.data));
+    })
+    .catch((err) => {
+      dispatch(getAllPostsByAuthorIdFail(err));
     });
 };

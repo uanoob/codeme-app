@@ -26,3 +26,5 @@ export const getCategories = () => (dispatch) => {
       dispatch(getCategoryFail(err));
     });
 };
+
+GET_CATEGORY_BY_ID

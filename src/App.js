@@ -10,6 +10,7 @@ import MainPage from './components/main/MainPage';
 import LoginPage from './containers/auth/LoginPage';
 import RegisterPage from './containers/auth/RegisterPage';
 import PostPage from './containers/post/PostPage';
+import ProfilePage from './containers/profile/ProfilePage';
 import { authCheckState } from './store/actions/root.action';
 
 class App extends Component {
@@ -32,7 +33,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/main" component={MainPage} />
           <Route exact path="/post" component={PostPage} />
-          {/* <Route exact path="/profile" component={ProfileUser} /> */}
+          <Route exact path="/profile" component={ProfilePage} />
           <Redirect to="/main" />
         </Switch>
       );
