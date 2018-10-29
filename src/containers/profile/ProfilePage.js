@@ -61,7 +61,7 @@ class ProfilePage extends React.Component {
   };
 
   render() {
-    const { classes, userName } = this.props;
+    const { classes, userName, userPosts } = this.props;
     const { expanded } = this.state;
 
     return (
@@ -78,14 +78,8 @@ class ProfilePage extends React.Component {
             </IconButton>
 )}
           title={userName}
-          subheader="September 14, 2016"
         />
-        <CardContent>
-          <Typography component="p">
-            This impressive paella is a perfect party dish and a fun meal to cook together with your
-            guests. Add 1 cup of frozen peas along with the mussels, if you like.
-          </Typography>
-        </CardContent>
+        <CardContent />
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Add to favorites">
             <FavoriteIcon />
@@ -106,14 +100,18 @@ class ProfilePage extends React.Component {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>Method:</Typography>
-            <Typography paragraph>
-              Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-              minutes.
-            </Typography>
-            <Typography>
-              Set aside off of the heat to let rest for 10 minutes, and then serve.
-            </Typography>
+            {userPosts.length !== 0 ? (
+              userPosts.map(post => (
+                <div key={post.id}>
+                  <Typography>{post.author_name}</Typography>
+                  <Typography>{post.title}</Typography>
+                  <Typography>{post.body}</Typography>
+                  <Typography>{post.category_name}</Typography>
+                </div>
+              ))
+            ) : (
+              <Typography>No any post here :(</Typography>
+            )}
           </CardContent>
         </Collapse>
         <ProfileForm />
@@ -123,15 +121,33 @@ class ProfilePage extends React.Component {
 }
 
 ProfilePage.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({
+    card: PropTypes.string.isRequired,
+    actions: PropTypes.string.isRequired,
+    expand: PropTypes.string.isRequired,
+    expandOpen: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+  }).isRequired,
+  userPosts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      body: PropTypes.string.isRequired,
+      author_id: PropTypes.string.isRequired,
+      author_name: PropTypes.string.isRequired,
+      category_id: PropTypes.string.isRequired,
+      category_name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   userId: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  userId: state.user.profile.id,
-  userName: state.user.profile.login,
+  userId: state.auth.user.id,
+  userName: state.auth.user.login,
+  userPosts: state.posts.posts,
 });
 
 const mapDispatchToProps = {

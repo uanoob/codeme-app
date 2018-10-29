@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Category from './Category';
-import { getCategories, getPostsByCategory } from '../../store/actions/root.action';
+import { getAllCategories, getPostsByCategory } from '../../store/actions/root.action';
 
 const styles = theme => ({
   root: {
@@ -20,8 +20,8 @@ class Categories extends React.Component {
   };
 
   componentDidMount() {
-    const { onGetCategories } = this.props;
-    onGetCategories();
+    const { onGetAllCategories } = this.props;
+    onGetAllCategories();
   }
 
   handleSelectedCategory = (index, title) => {
@@ -57,7 +57,7 @@ Categories.propTypes = {
   classes: PropTypes.shape({
     root: PropTypes.string.isRequired,
   }).isRequired,
-  onGetCategories: PropTypes.func.isRequired,
+  onGetAllCategories: PropTypes.func.isRequired,
   onGetPostsByCategory: PropTypes.func.isRequired,
   categories: PropTypes.arrayOf(
     PropTypes.shape({
@@ -74,7 +74,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  onGetCategories: getCategories,
+  onGetAllCategories: getAllCategories,
   onGetPostsByCategory: getPostsByCategory,
 };
 

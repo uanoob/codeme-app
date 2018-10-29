@@ -100,8 +100,8 @@ Comments.propTypes = {
 const mapStateToProps = state => ({
   commentFieldValid: state.validation.isCommentInputValid,
   postId: state.posts.post.id,
-  authorId: state.user.profile.id,
-  authorName: state.user.profile.login,
+  authorId: state.auth.user.id,
+  authorName: state.auth.user.login,
 });
 
 const mapDispatchToProps = {
