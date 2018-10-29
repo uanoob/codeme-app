@@ -82,7 +82,6 @@ export const getPostById = id => (dispatch) => {
   axios
     .get(`/post/${id}`)
     .then((response) => {
-      console.log(response.data);
       dispatch(getPostByIdSuccess(response.data.data));
     })
     .catch((err) => {

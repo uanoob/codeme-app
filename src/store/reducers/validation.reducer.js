@@ -1,8 +1,13 @@
-import { IS_NAME_INPUT_VALID, IS_PASSWORD_INPUT_VALID } from '../actions/types';
+import {
+  IS_NAME_INPUT_VALID,
+  IS_PASSWORD_INPUT_VALID,
+  IS_COMMENT_INPUT_VALID,
+} from '../actions/types';
 
 const initialState = {
   isNameInputValid: false,
   isPasswordInputValid: false,
+  isCommentInputValid: false,
   error: null,
 };
 
@@ -18,6 +23,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isPasswordInputValid: action.flag,
+        error: null,
+      };
+    case IS_COMMENT_INPUT_VALID:
+      return {
+        ...state,
+        isCommentInputValid: action.flag,
         error: null,
       };
     default:
