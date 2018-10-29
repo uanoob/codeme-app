@@ -6,11 +6,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {
-  getCategories,
+  getAllCategories,
+  getSingleCategoryById,
   setCategoryInputValid,
   setTitleInputValid,
   setBodyInputValid,
-  handleNewPost,
+  createPosts,
 } from '../../store/actions/root.action';
 import checkValidity from '../../utils/validation.utils';
 
@@ -42,14 +43,13 @@ class ProfileForm extends React.Component {
   };
 
   componentDidMount() {
-    const { onGetCategories } = this.props;
-    onGetCategories();
+    const { onGetAllCategories } = this.props;
+    onGetAllCategories();
   }
 
   handleChangeCategory = (e) => {
     const { onSetCategoryInputValid } = this.props;
     onSetCategoryInputValid(checkValidity(e.target.value));
-    console.log('category ', e.target.value);
     this.setState({
       touchedCategory: true,
       category: e.target.value,
@@ -59,7 +59,6 @@ class ProfileForm extends React.Component {
   handleChangeTitle = (e) => {
     const { onSetTitleInputValid } = this.props;
     onSetTitleInputValid(checkValidity(e.target.value));
-    console.log('title ', e.target.value);
     this.setState({
       touchedTitle: true,
       title: e.target.value,
@@ -68,7 +67,6 @@ class ProfileForm extends React.Component {
 
   handleChangeBody = (e) => {
     const { onSetBodyInputValid } = this.props;
-    console.log('body', e.target.value);
     onSetBodyInputValid(checkValidity(e.target.value));
     this.setState({
       touchedBody: true,
@@ -79,10 +77,12 @@ class ProfileForm extends React.Component {
   submitHandler = (e) => {
     e.preventDefault();
 
-    const { handleNewPost } = this.props;
+    const { onCreatePosts, authorId, authorName } = this.props;
+    const categoryId = '5bd17b658687182040149f9f';
+    const categoryName = 'Test4';
 
-    const { userId, userName, category, title,body } = this.state;
-    handleNewPost(name, password);
+    const { title, body } = this.state;
+    onCreatePosts(title, body, authorId, authorName, categoryId, categoryName);
   };
 
   render() {
@@ -90,7 +90,7 @@ class ProfileForm extends React.Component {
       classes, categories, categoryInputValid, titleInputValid, bodyInputValid,
     } = this.props;
     const {
-      category, title, body, touchedCategory, touchedTitle, touchedBody,
+      category, touchedCategory, touchedTitle, touchedBody,
     } = this.state;
 
     return (
@@ -107,7 +107,7 @@ class ProfileForm extends React.Component {
             error={!titleInputValid && touchedTitle}
           />
 
-          <TextField
+          {/* <TextField
             id="addNewCategory"
             label="Add New Category"
             placeholder="Add New Category"
@@ -116,7 +116,7 @@ class ProfileForm extends React.Component {
             variant="filled"
             onChange={this.handleChangeCategory}
             error={!categoryInputValid && touchedCategory}
-          />
+          /> */}
 
           <TextField
             id="filled-select-category"
@@ -160,6 +160,7 @@ class ProfileForm extends React.Component {
           variant="contained"
           color="secondary"
           className={classes.button}
+          onClick={this.submitHandler}
           disabled={!(categoryInputValid && titleInputValid && bodyInputValid)}
         >
           Create Post
@@ -170,17 +171,31 @@ class ProfileForm extends React.Component {
 }
 
 ProfileForm.propTypes = {
-  classes: PropTypes.object.isRequired,
-  categories: PropTypes.array.isRequired,
-  onGetCategories: PropTypes.func.isRequired,
+  classes: PropTypes.shape({
+    container: PropTypes.string.isRequired,
+    textField: PropTypes.string.isRequired,
+    dense: PropTypes.string.isRequired,
+    menu: PropTypes.string.isRequired,
+  }).isRequired,
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      alias: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  onGetAllCategories: PropTypes.func.isRequired,
+  // onGetSingleCategoryById: PropTypes.func.isRequired,
   onSetCategoryInputValid: PropTypes.func.isRequired,
   onSetTitleInputValid: PropTypes.func.isRequired,
   onSetBodyInputValid: PropTypes.func.isRequired,
   categoryInputValid: PropTypes.bool.isRequired,
   titleInputValid: PropTypes.bool.isRequired,
   bodyInputValid: PropTypes.bool.isRequired,
-  userId: PropTypes.string.isRequired,
-  userName: PropTypes.string.isRequired,
+  authorId: PropTypes.string.isRequired,
+  authorName: PropTypes.string.isRequired,
+  onCreatePosts: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -188,17 +203,18 @@ const mapStateToProps = state => ({
   categoryInputValid: state.validation.isCategoryInputValid,
   titleInputValid: state.validation.isTitleInputValid,
   bodyInputValid: state.validation.isBodyInputValid,
-  categoryId: state.categories.categories.
-  userId: state.user.profile.id,
-  userName: state.user.profile.login,
+  categoryId: state.categories.categories,
+  authorId: state.auth.user.id,
+  authorName: state.auth.user.login,
 });
 
 const mapDispatchToProps = {
-  onGetCategories: getCategories,
+  onGetAllCategories: getAllCategories,
+  onGetSingleCategoryById: getSingleCategoryById,
   onSetCategoryInputValid: setCategoryInputValid,
   onSetTitleInputValid: setTitleInputValid,
   onSetBodyInputValid: setBodyInputValid,
-  onHandleNewPost: handleNewPost,
+  onCreatePosts: createPosts,
 };
 
 export default withStyles(styles)(
