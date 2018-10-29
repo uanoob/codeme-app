@@ -3,6 +3,9 @@ import {
   GET_POST_START,
   GET_POST_SUCCESS,
   GET_POST_FAIL,
+  CREATE_POST_START,
+  CREATE_POST_SUCCESS,
+  CREATE_POST_FAIL,
   GET_POST_BY_CATEGORY_START,
   GET_POST_BY_CATEGORY_SUCCESS,
   GET_POST_BY_CATEGORY_FAIL,
@@ -37,6 +40,75 @@ export const getPosts = () => (dispatch) => {
     })
     .catch((err) => {
       dispatch(getPostFail(err));
+    });
+};
+
+const getAllPostsByAuthorIdStart = () => ({
+  type: GET_ALL_POSTS_BY_AUTHOR_ID_START,
+});
+
+const getAllPostsByAuthorIdSuccess = posts => ({
+  type: GET_ALL_POSTS_BY_AUTHOR_ID_SUCCESS,
+  posts,
+});
+
+const getAllPostsByAuthorIdFail = error => ({
+  type: GET_ALL_POSTS_BY_AUTHOR_ID_FAIL,
+  error,
+});
+
+export const getAllPostsByAuthorId = id => (dispatch) => {
+  dispatch(getAllPostsByAuthorIdStart());
+  axios
+    .get(`/post/author/${id}`)
+    .then((response) => {
+      dispatch(getAllPostsByAuthorIdSuccess(response.data.data));
+    })
+    .catch((err) => {
+      dispatch(getAllPostsByAuthorIdFail(err));
+    });
+};
+
+const createPostStart = () => ({
+  type: CREATE_POST_START,
+});
+
+const createPostSuccess = () => ({
+  type: CREATE_POST_SUCCESS,
+});
+
+const createPostFail = error => ({
+  type: CREATE_POST_FAIL,
+  error,
+});
+
+export const createPosts = (
+  title,
+  body,
+  authorId,
+  authorName,
+  categoryId,
+  categoryName,
+) => (dispatch) => {
+  const postData = {
+    title,
+    body,
+    author_id: authorId,
+    author_name: authorName,
+    category_id: categoryId,
+    category_name: categoryName,
+  };
+  // console.log(postData);
+  dispatch(createPostStart());
+  axios
+    .post('/post', postData)
+    .then((response) => {
+      console.log(response);
+      dispatch(createPostSuccess(response.data));
+      dispatch(getAllPostsByAuthorId(authorId));
+    })
+    .catch((err) => {
+      dispatch(createPostFail(err));
     });
 };
 
@@ -89,32 +161,5 @@ export const getPostById = id => (dispatch) => {
     })
     .catch((err) => {
       dispatch(getPostByIdFail(err));
-    });
-};
-
-const getAllPostsByAuthorIdStart = () => ({
-  type: GET_ALL_POSTS_BY_AUTHOR_ID_START,
-});
-
-const getAllPostsByAuthorIdSuccess = posts => ({
-  type: GET_ALL_POSTS_BY_AUTHOR_ID_SUCCESS,
-  posts,
-});
-
-const getAllPostsByAuthorIdFail = error => ({
-  type: GET_ALL_POSTS_BY_AUTHOR_ID_FAIL,
-  error,
-});
-
-export const getAllPostsByAuthorId = id => (dispatch) => {
-  dispatch(getAllPostsByAuthorIdStart());
-  axios
-    .get(`/post/author/${id}`)
-    .then((response) => {
-      console.log(response.data);
-      dispatch(getAllPostsByAuthorIdSuccess(response.data.data));
-    })
-    .catch((err) => {
-      dispatch(getAllPostsByAuthorIdFail(err));
     });
 };
