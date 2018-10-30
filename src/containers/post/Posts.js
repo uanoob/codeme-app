@@ -12,7 +12,6 @@ import {
   getPostById,
   getCommentsByPostId,
   getAllPostsByAuthorId,
-  setCurrentAuthorById,
 } from '../../store/actions/root.action';
 import stringToColor from '../../utils/stringToColor';
 
@@ -47,10 +46,9 @@ class Posts extends React.Component {
   };
 
   handleAuthorPosts = (authorId) => {
-    const { history, onGetAllPostsByAuthorId, onSetCurrentAuthorById } = this.props;
+    const { history, onGetAllPostsByAuthorId } = this.props;
     console.log(authorId);
     onGetAllPostsByAuthorId(authorId);
-    onSetCurrentAuthorById(authorId);
     history.push('/profile');
   };
 
@@ -102,7 +100,6 @@ Posts.propTypes = {
   onGetPostById: PropTypes.func.isRequired,
   onGetCommentsByPostId: PropTypes.func.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
-  onSetCurrentAuthorById: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -126,7 +123,6 @@ const mapDispatchToProps = {
   onGetPostById: getPostById,
   onGetCommentsByPostId: getCommentsByPostId,
   onGetAllPostsByAuthorId: getAllPostsByAuthorId,
-  onSetCurrentAuthorById: setCurrentAuthorById,
 };
 
 export default withStyles(styles)(
