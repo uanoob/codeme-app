@@ -8,10 +8,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PostTemplate from '../../components/postTemplate/PostTemplate';
 import {
-  getPosts,
+  getAllPosts,
   getPostById,
   getCommentsByPostId,
   getAllPostsByAuthorId,
+  deletePosts,
+  updatePosts,
 } from '../../store/actions/root.action';
 import stringToColor from '../../utils/stringToColor';
 
@@ -30,8 +32,8 @@ class Posts extends React.Component {
   state = {};
 
   componentDidMount() {
-    const { onGetPosts } = this.props;
-    onGetPosts();
+    const { onGetAllPosts } = this.props;
+    onGetAllPosts();
   }
 
   handleColor = string => stringToColor(string);
@@ -52,6 +54,16 @@ class Posts extends React.Component {
   };
 
   handleColor = string => stringToColor(string);
+
+  handleDeletePost = (postId, authorId) => {
+    console.log(postId);
+    const { onDeletePosts } = this.props;
+    onDeletePosts(postId, authorId);
+  };
+
+  handleUpdatePost = (postId) => {
+    console.log(postId);
+  };
 
   render() {
     const { posts, classes } = this.props;
@@ -76,6 +88,8 @@ class Posts extends React.Component {
               handleAuthorPosts={() => this.handleAuthorPosts(post.author_id)}
               handleExpandClick={() => this.handleExpandClick()}
               handleColor={() => this.handleColor(post.body)}
+              handleDeletePost={() => this.handleDeletePost(post.id, post.author_id)}
+              handleUpdatePost={() => this.handleUpdatePost(post.id)}
               expanded={expanded}
             />
           ))}
@@ -98,10 +112,12 @@ Posts.propTypes = {
     root: PropTypes.string.isRequired,
     nested: PropTypes.string.isRequired,
   }).isRequired,
-  onGetPosts: PropTypes.func.isRequired,
+  onGetAllPosts: PropTypes.func.isRequired,
   onGetPostById: PropTypes.func.isRequired,
   onGetCommentsByPostId: PropTypes.func.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
+  onDeletePosts: PropTypes.func.isRequired,
+  onUpdatePosts: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -121,10 +137,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  onGetPosts: getPosts,
+  onGetAllPosts: getAllPosts,
   onGetPostById: getPostById,
   onGetCommentsByPostId: getCommentsByPostId,
   onGetAllPostsByAuthorId: getAllPostsByAuthorId,
+  onDeletePosts: deletePosts,
+  onUpdatePosts: updatePosts,
 };
 
 export default withStyles(styles)(

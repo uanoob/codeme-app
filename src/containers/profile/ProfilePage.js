@@ -22,7 +22,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import FolderIcon from '@material-ui/icons/Chat';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
-import { getAllPostsByAuthorId } from '../../store/actions/root.action';
+import { getAllPostsByAuthorId, deletePosts } from '../../store/actions/root.action';
 import ProfileForm from './ProfileForm';
 import stringToColor from '../../utils/stringToColor';
 
@@ -69,27 +69,23 @@ class ProfilePage extends React.Component {
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
+  handlerDeletePost = (postId) => {
+    console.log(postId);
+    const { onDeletePosts } = this.props;
+    onDeletePosts(postId);
+  };
+
   render() {
-    const {
-      classes, userName, userPosts, userId, authorId,
-    } = this.props;
+    const { classes, userName, userPosts } = this.props;
     const { expanded } = this.state;
 
     return (
       <Card className={classes.card}>
         <CardHeader
           avatar={(
-            <Avatar
-              aria-label="Recipe"
-              style={{ backgroundColor: this.handleColor(userPosts[0].author_name) }}
-            >
-              {this.handleAuthorAvatar(userPosts[0].author_name)}
+            <Avatar aria-label="Recipe" style={{ backgroundColor: this.handleColor(userName) }}>
+              {this.handleAuthorAvatar(userName)}
             </Avatar>
-)}
-          action={(
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
 )}
           title={userName}
         />
@@ -122,7 +118,10 @@ class ProfilePage extends React.Component {
                       </ListItemAvatar>
                       <ListItemText primary={post.title} />
                       <ListItemSecondaryAction>
-                        <IconButton aria-label="Delete">
+                        <IconButton
+                          aria-label="Delete"
+                          onClick={() => this.handlerDeletePost(post.id)}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
@@ -168,6 +167,7 @@ ProfilePage.propTypes = {
   userId: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
+  onDeletePosts: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -178,6 +178,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onGetAllPostsByAuthorId: getAllPostsByAuthorId,
+  onDeletePosts: deletePosts,
 };
 
 export default withStyles(styles)(
