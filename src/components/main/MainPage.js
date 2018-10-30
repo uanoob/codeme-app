@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Sidebar from '../sidebar/Sidebar';
+import Categories from '../../containers/category/Categories';
 import Posts from '../../containers/post/Posts';
 
 const styles = theme => ({
@@ -29,7 +29,7 @@ function CSSGrid(props) {
       <Grid container spacing={24}>
         <Grid item xs={4}>
           <Paper className={classes.paper}>
-            <Sidebar />
+            <Categories />
           </Paper>
         </Grid>
         <Grid item xs={8}>
