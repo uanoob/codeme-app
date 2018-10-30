@@ -8,6 +8,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PostTemplate from '../../components/postTemplate/PostTemplate';
 import { getPosts, getPostById, getCommentsByPostId } from '../../store/actions/root.action';
+import stringToColor from '../../utils/stringToColor';
 
 const styles = theme => ({
   root: {
@@ -21,16 +22,16 @@ const styles = theme => ({
 });
 
 class Posts extends React.Component {
-  state = { expanded: false };
+  state = {};
 
   componentDidMount() {
     const { onGetPosts } = this.props;
     onGetPosts();
   }
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
+  handleColor = string => stringToColor(string);
+
+  handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
   handleSelectedPost = (id) => {
     const { onGetPostById, onGetCommentsByPostId, history } = this.props;
@@ -52,6 +53,8 @@ class Posts extends React.Component {
               id={post.id}
               title={post.title}
               body={post.body}
+              authorColor={this.handleColor(post.author_name)}
+              authorAvatar={this.handleAuthorAvatar(post.author_name)}
               authorId={post.author_id}
               authorName={post.author_name}
               categoryId={post.category_id}

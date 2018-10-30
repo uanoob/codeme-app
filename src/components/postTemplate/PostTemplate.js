@@ -5,24 +5,15 @@ import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = theme => ({
   card: {
     maxWidth: 400,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
   },
   actions: {
     display: 'flex',
@@ -48,20 +39,23 @@ const styles = theme => ({
 const PostTemplate = (props) => {
   const {
     classes,
-    expanded,
     handleSelectedPost,
-    handleExpandClick,
+    authorAvatar,
+    authorColor,
     authorName,
     categoryName,
     body,
   } = props;
+
+  console.log(authorColor);
+  console.log(authorAvatar);
 
   return (
     <Card className={classes.card}>
       <CardHeader
         avatar={(
           <Avatar aria-label="Recipe" className={classes.avatar}>
-            R
+            {authorAvatar}
           </Avatar>
 )}
         action={(
@@ -72,44 +66,21 @@ const PostTemplate = (props) => {
         title={authorName}
         subheader={categoryName}
       />
-
-      <CardActions className={classes.actions} disableActionSpacing>
-        <IconButton aria-label="Add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="Share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={classnames(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="Show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <CardContent>
         <CardContent>
-          <CardContent>
-            <Typography component="p">{body}</Typography>
-          </CardContent>
+          <Typography component="p">{body}</Typography>
         </CardContent>
-      </Collapse>
+      </CardContent>
     </Card>
   );
 };
 
 PostTemplate.propTypes = {
   classes: PropTypes.object.isRequired,
-  expanded: PropTypes.bool.isRequired,
   authorName: PropTypes.string.isRequired,
   categoryName: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   handleSelectedPost: PropTypes.func.isRequired,
-  handleExpandClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(PostTemplate);
