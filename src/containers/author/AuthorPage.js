@@ -50,7 +50,8 @@ class AuthorPage extends React.Component {
 
   componentDidMount() {
     // console.log(this.props.match.params.id);
-    const { userId, onGetAllPostsByAuthorId } = this.props;
+    const userId = this.props.match.params.id;
+    const { onGetAllPostsByAuthorId } = this.props;
     onGetAllPostsByAuthorId(userId);
   }
 
@@ -63,20 +64,15 @@ class AuthorPage extends React.Component {
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
   render() {
-    const {
-      classes, userName, userPosts, userId, authorId,
-    } = this.props;
+    const { classes, userName, userPosts } = this.props;
     const { expanded } = this.state;
 
     return (
       <Card className={classes.card}>
         <CardHeader
           avatar={(
-            <Avatar
-              aria-label="Recipe"
-              style={{ backgroundColor: this.handleColor(userPosts[0].author_name) }}
-            >
-              {this.handleAuthorAvatar(userPosts[0].author_name)}
+            <Avatar aria-label="Recipe" style={{ backgroundColor: this.handleColor(userName) }}>
+              {this.handleAuthorAvatar(userName)}
             </Avatar>
 )}
           action={(
@@ -145,15 +141,13 @@ AuthorPage.propTypes = {
       category_name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  userId: PropTypes.string.isRequired,
+  // userId: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  userId: state.auth.user.id,
-  authorId: state.author.authorId,
-  userName: state.auth.user.login,
+  userName: state.posts.posts[0].author_name,
   userPosts: state.posts.posts,
 });
 

@@ -47,9 +47,8 @@ class Posts extends React.Component {
 
   handleAuthorPosts = (authorId) => {
     const { history, onGetAllPostsByAuthorId } = this.props;
-    console.log(authorId);
     onGetAllPostsByAuthorId(authorId);
-    history.push('/profile');
+    history.push(`/author/${authorId}`);
   };
 
   render() {

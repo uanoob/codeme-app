@@ -96,7 +96,6 @@ Header.propTypes = {
   classes: PropTypes.shape({ root: PropTypes.string.isRequired }).isRequired,
   onLogout: PropTypes.func.isRequired,
   isAutenticated: PropTypes.bool.isRequired,
-  userId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
