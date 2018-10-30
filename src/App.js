@@ -11,6 +11,7 @@ import LoginPage from './containers/auth/LoginPage';
 import RegisterPage from './containers/auth/RegisterPage';
 import PostPage from './containers/post/PostPage';
 import ProfilePage from './containers/profile/ProfilePage';
+import AuthorPage from './containers/author/AuthorPage';
 import { authCheckState } from './store/actions/root.action';
 
 class App extends Component {
@@ -34,6 +35,7 @@ class App extends Component {
           <Route exact path="/main" component={MainPage} />
           <Route exact path="/post" component={PostPage} />
           <Route exact path="/profile" component={ProfilePage} />
+          <Route exact path="/author/:id" component={AuthorPage} />
           <Redirect to="/main" />
         </Switch>
       );
