@@ -10,11 +10,18 @@ import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import FolderIcon from '@material-ui/icons/Chat';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Paper from '@material-ui/core/Paper';
 import { getAllPostsByAuthorId } from '../../store/actions/root.action';
 import stringToColor from '../../utils/stringToColor';
 
@@ -25,6 +32,13 @@ const styles = theme => ({
     flexWrap: 'wrap',
     margin: 'auto',
     maxWidth: 400,
+  },
+  paper: {
+    padding: theme.spacing.unit,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    whiteSpace: 'nowrap',
+    marginBottom: theme.spacing.unit,
   },
   actions: {
     display: 'flex',
@@ -49,8 +63,8 @@ class AuthorPage extends React.Component {
   state = { expanded: false };
 
   componentDidMount() {
-    // console.log(this.props.match.params.id);
-    const userId = this.props.match.params.id;
+    const { match } = this.props;
+    const userId = match.params.id;
     const { onGetAllPostsByAuthorId } = this.props;
     onGetAllPostsByAuthorId(userId);
   }
@@ -75,21 +89,10 @@ class AuthorPage extends React.Component {
               {this.handleAuthorAvatar(userName)}
             </Avatar>
 )}
-          action={(
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
-)}
           title={userName}
         />
         <CardContent />
         <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton aria-label="Add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="Share">
-            <ShareIcon />
-          </IconButton>
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: expanded,
@@ -106,10 +109,27 @@ class AuthorPage extends React.Component {
             {userPosts.length !== 0 ? (
               userPosts.map(post => (
                 <div key={post.id}>
-                  <Typography>{post.author_name}</Typography>
-                  <Typography>{post.title}</Typography>
-                  <Typography>{post.body}</Typography>
-                  <Typography>{post.category_name}</Typography>
+                  <Paper className={classes.paper}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar style={{ backgroundColor: this.handleColor(post.body) }}>
+                          <FolderIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={post.title} />
+                      <ListItemSecondaryAction>
+                        <IconButton aria-label="Delete">
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={post.body} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={post.category_name} />
+                    </ListItem>
+                  </Paper>
                 </div>
               ))
             ) : (
@@ -141,7 +161,6 @@ AuthorPage.propTypes = {
       category_name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  // userId: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
 };

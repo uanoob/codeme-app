@@ -15,6 +15,13 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import FolderIcon from '@material-ui/icons/Chat';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Paper from '@material-ui/core/Paper';
 import { getAllPostsByAuthorId } from '../../store/actions/root.action';
 import ProfileForm from './ProfileForm';
 import stringToColor from '../../utils/stringToColor';
@@ -87,13 +94,8 @@ class ProfilePage extends React.Component {
           title={userName}
         />
         <CardContent />
+        <ProfileForm />
         <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton aria-label="Add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="Share">
-            <ShareIcon />
-          </IconButton>
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: expanded,
@@ -105,15 +107,33 @@ class ProfilePage extends React.Component {
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
+
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
             {userPosts.length !== 0 ? (
               userPosts.map(post => (
                 <div key={post.id}>
-                  <Typography>{post.author_name}</Typography>
-                  <Typography>{post.title}</Typography>
-                  <Typography>{post.body}</Typography>
-                  <Typography>{post.category_name}</Typography>
+                  <Paper className={classes.paper}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar style={{ backgroundColor: this.handleColor(post.body) }}>
+                          <FolderIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={post.title} />
+                      <ListItemSecondaryAction>
+                        <IconButton aria-label="Delete">
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={post.body} />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={post.category_name} />
+                    </ListItem>
+                  </Paper>
                 </div>
               ))
             ) : (
@@ -121,7 +141,6 @@ class ProfilePage extends React.Component {
             )}
           </CardContent>
         </Collapse>
-        <ProfileForm />
       </Card>
     );
   }

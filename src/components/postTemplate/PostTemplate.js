@@ -6,8 +6,13 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import FolderIcon from '@material-ui/icons/Chat';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = () => ({
   card: {
@@ -24,6 +29,7 @@ const PostTemplate = (props) => {
     classes,
     handleSelectedPost,
     handleAuthorPosts,
+    handleColor,
     authorAvatar,
     authorColor,
     authorName,
@@ -56,7 +62,19 @@ const PostTemplate = (props) => {
       />
       <CardContent>
         <CardContent>
-          <Typography component="p">{body}</Typography>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar style={{ backgroundColor: handleColor() }}>
+                <FolderIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={body} />
+            <ListItemSecondaryAction>
+              <IconButton aria-label="Delete">
+                <DeleteIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
         </CardContent>
       </CardContent>
     </Card>
@@ -76,6 +94,7 @@ PostTemplate.propTypes = {
   body: PropTypes.string.isRequired,
   handleSelectedPost: PropTypes.func.isRequired,
   handleAuthorPosts: PropTypes.func.isRequired,
+  handleColor: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(PostTemplate);

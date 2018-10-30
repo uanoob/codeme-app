@@ -51,6 +51,8 @@ class Posts extends React.Component {
     history.push(`/author/${authorId}`);
   };
 
+  handleColor = string => stringToColor(string);
+
   render() {
     const { posts, classes } = this.props;
     const { expanded } = this.state;
@@ -73,6 +75,7 @@ class Posts extends React.Component {
               handleSelectedPost={() => this.handleSelectedPost(post.id)}
               handleAuthorPosts={() => this.handleAuthorPosts(post.author_id)}
               handleExpandClick={() => this.handleExpandClick()}
+              handleColor={() => this.handleColor(post.body)}
               expanded={expanded}
             />
           ))}
