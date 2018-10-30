@@ -16,6 +16,7 @@ export { getAllCategories, getSingleCategoryById } from './category.action';
 export {
   getPosts,
   createPosts,
+  deletePosts,
   getPostsByCategory,
   getPostById,
   getAllPostsByAuthorId,

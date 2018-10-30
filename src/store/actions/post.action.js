@@ -6,6 +6,9 @@ import {
   CREATE_POST_START,
   CREATE_POST_SUCCESS,
   CREATE_POST_FAIL,
+  DELETE_POST_START,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAIL,
   GET_POST_BY_CATEGORY_START,
   GET_POST_BY_CATEGORY_SUCCESS,
   GET_POST_BY_CATEGORY_FAIL,
@@ -66,6 +69,34 @@ export const getAllPostsByAuthorId = id => (dispatch) => {
     })
     .catch((err) => {
       dispatch(getAllPostsByAuthorIdFail(err));
+    });
+};
+
+const deletePostStart = () => ({
+  type: DELETE_POST_START,
+});
+
+const deletePostSuccess = posts => ({
+  type: DELETE_POST_SUCCESS,
+  posts,
+});
+
+const deletePostFail = error => ({
+  type: DELETE_POST_FAIL,
+  error,
+});
+
+export const deletePosts = (postId, userId) => (dispatch) => {
+  dispatch(deletePostStart());
+  axios
+    .delete(`/post/${postId}`)
+    .then((response) => {
+      console.log(response);
+      dispatch(deletePostSuccess(response.data.success));
+      dispatch(getAllPostsByAuthorId(userId));
+    })
+    .catch((err) => {
+      dispatch(deletePostFail(err));
     });
 };
 

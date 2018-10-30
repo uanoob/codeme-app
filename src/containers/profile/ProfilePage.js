@@ -11,8 +11,6 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ListItem from '@material-ui/core/ListItem';
@@ -22,7 +20,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import FolderIcon from '@material-ui/icons/Chat';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
-import { getAllPostsByAuthorId } from '../../store/actions/root.action';
+import { getAllPostsByAuthorId, deletePosts } from '../../store/actions/root.action';
 import ProfileForm from './ProfileForm';
 import stringToColor from '../../utils/stringToColor';
 
@@ -69,10 +67,13 @@ class ProfilePage extends React.Component {
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
+  handlerDelete = (postId) => {
+    const { onDeletePost, userId } = this.props;
+    onDeletePost(postId, userId);
+  };
+
   render() {
-    const {
-      classes, userName, userPosts, userId, authorId,
-    } = this.props;
+    const { classes, userName, userPosts } = this.props;
     const { expanded } = this.state;
 
     return (
@@ -122,7 +123,7 @@ class ProfilePage extends React.Component {
                       </ListItemAvatar>
                       <ListItemText primary={post.title} />
                       <ListItemSecondaryAction>
-                        <IconButton aria-label="Delete">
+                        <IconButton aria-label="Delete" onClick={() => this.handlerDelete(post.id)}>
                           <DeleteIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
@@ -168,6 +169,7 @@ ProfilePage.propTypes = {
   userId: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
+  onDeletePost: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -178,6 +180,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onGetAllPostsByAuthorId: getAllPostsByAuthorId,
+  onDeletePost: deletePosts,
 };
 
 export default withStyles(styles)(
