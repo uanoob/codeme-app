@@ -11,13 +11,13 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { getAllPostsByAuthorId } from '../../store/actions/root.action';
 import ProfileForm from './ProfileForm';
+import stringToColor from '../../utils/stringToColor';
 
 const styles = theme => ({
   card: {
@@ -43,9 +43,7 @@ const styles = theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-  avatar: {
-    backgroundColor: red[500],
-  },
+  avatar: {},
 });
 
 class ProfilePage extends React.Component {
@@ -60,16 +58,25 @@ class ProfilePage extends React.Component {
     this.setState(state => ({ expanded: !state.expanded }));
   };
 
+  handleColor = string => stringToColor(string);
+
+  handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
+
   render() {
-    const { classes, userName, userPosts } = this.props;
+    const {
+      classes, userName, userPosts, userId, authorId,
+    } = this.props;
     const { expanded } = this.state;
 
     return (
       <Card className={classes.card}>
         <CardHeader
           avatar={(
-            <Avatar aria-label="Recipe" className={classes.avatar}>
-              R
+            <Avatar
+              aria-label="Recipe"
+              style={{ backgroundColor: this.handleColor(userPosts[0].author_name) }}
+            >
+              {this.handleAuthorAvatar(userPosts[0].author_name)}
             </Avatar>
 )}
           action={(

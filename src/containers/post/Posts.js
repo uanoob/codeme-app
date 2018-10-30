@@ -7,7 +7,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PostTemplate from '../../components/postTemplate/PostTemplate';
-import { getPosts, getPostById, getCommentsByPostId } from '../../store/actions/root.action';
+import {
+  getPosts,
+  getPostById,
+  getCommentsByPostId,
+  getAllPostsByAuthorId,
+  setCurrentAuthorById,
+} from '../../store/actions/root.action';
 import stringToColor from '../../utils/stringToColor';
 
 const styles = theme => ({
@@ -33,11 +39,19 @@ class Posts extends React.Component {
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
-  handleSelectedPost = (id) => {
+  handleSelectedPost = (postId) => {
     const { onGetPostById, onGetCommentsByPostId, history } = this.props;
-    onGetPostById(id);
-    onGetCommentsByPostId(id);
+    onGetPostById(postId);
+    onGetCommentsByPostId(postId);
     history.push('/post');
+  };
+
+  handleAuthorPosts = (authorId) => {
+    const { history, onGetAllPostsByAuthorId, onSetCurrentAuthorById } = this.props;
+    console.log(authorId);
+    onGetAllPostsByAuthorId(authorId);
+    onSetCurrentAuthorById(authorId);
+    history.push('/profile');
   };
 
   render() {
@@ -60,6 +74,7 @@ class Posts extends React.Component {
               categoryId={post.category_id}
               categoryName={post.category_name}
               handleSelectedPost={() => this.handleSelectedPost(post.id)}
+              handleAuthorPosts={() => this.handleAuthorPosts(post.author_id)}
               handleExpandClick={() => this.handleExpandClick()}
               expanded={expanded}
             />
@@ -86,6 +101,8 @@ Posts.propTypes = {
   onGetPosts: PropTypes.func.isRequired,
   onGetPostById: PropTypes.func.isRequired,
   onGetCommentsByPostId: PropTypes.func.isRequired,
+  onGetAllPostsByAuthorId: PropTypes.func.isRequired,
+  onSetCurrentAuthorById: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -108,6 +125,8 @@ const mapDispatchToProps = {
   onGetPosts: getPosts,
   onGetPostById: getPostById,
   onGetCommentsByPostId: getCommentsByPostId,
+  onGetAllPostsByAuthorId: getAllPostsByAuthorId,
+  onSetCurrentAuthorById: setCurrentAuthorById,
 };
 
 export default withStyles(styles)(

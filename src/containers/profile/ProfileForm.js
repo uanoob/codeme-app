@@ -35,6 +35,7 @@ const styles = theme => ({
 class ProfileForm extends React.Component {
   state = {
     category: '',
+    categoryId: undefined,
     title: '',
     body: '',
     touchedCategory: false,
@@ -50,10 +51,17 @@ class ProfileForm extends React.Component {
   handleChangeCategory = (e) => {
     const { onSetCategoryInputValid } = this.props;
     onSetCategoryInputValid(checkValidity(e.target.value));
+    this.handleGetIdCategory(e.target.value);
     this.setState({
       touchedCategory: true,
       category: e.target.value,
     });
+  };
+
+  handleGetIdCategory = (title) => {
+    const { categories } = this.props;
+    const result = categories.filter(category => category.title === title);
+    console.log(result[0].id);
   };
 
   handleChangeTitle = (e) => {
@@ -78,11 +86,19 @@ class ProfileForm extends React.Component {
     e.preventDefault();
 
     const { onCreatePosts, authorId, authorName } = this.props;
-    const categoryId = '5bd17b658687182040149f9f';
-    const categoryName = 'Test4';
-
-    const { title, body } = this.state;
-    onCreatePosts(title, body, authorId, authorName, categoryId, categoryName);
+    const {
+      title, body, categoryId, category,
+    } = this.state;
+    onCreatePosts(title, body, authorId, authorName, categoryId, category);
+    this.setState({
+      category: '',
+      categoryId: undefined,
+      title: '',
+      body: '',
+      touchedCategory: false,
+      touchedTitle: false,
+      touchedBody: false,
+    });
   };
 
   render() {

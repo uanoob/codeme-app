@@ -98,12 +98,10 @@ export const createPosts = (
     category_id: categoryId,
     category_name: categoryName,
   };
-  // console.log(postData);
   dispatch(createPostStart());
   axios
     .post('/post', postData)
     .then((response) => {
-      console.log(response);
       dispatch(createPostSuccess(response.data));
       dispatch(getAllPostsByAuthorId(authorId));
     })
