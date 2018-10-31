@@ -9,42 +9,14 @@ import {
   AUTH_START,
   AUTH_SUCCESS,
   AUTH_FAIL,
-  GET_USER_BY_TOKEN_START,
-  GET_USER_BY_TOKEN_SUCCESS,
-  GET_USER_BY_TOKEN_FAIL,
 } from './types';
+
+import { getUserByToken } from './root.action';
 
 export const isLogined = flag => ({
   type: IS_LOGINED,
   isLogined: flag,
 });
-
-export const getUserByTokenStart = () => ({
-  type: GET_USER_BY_TOKEN_START,
-});
-
-export const getUserByTokenSuccess = user => ({
-  type: GET_USER_BY_TOKEN_SUCCESS,
-  user,
-});
-
-export const getUserByTokenFail = error => ({
-  type: GET_USER_BY_TOKEN_FAIL,
-  error,
-});
-
-export const getUserByToken = () => (dispatch) => {
-  dispatch(getUserByTokenStart());
-  axios
-    .get('/user')
-    .then((response) => {
-      dispatch(getUserByTokenSuccess(response.data));
-      dispatch(isLogined(true));
-    })
-    .catch((err) => {
-      dispatch(getUserByTokenFail(err));
-    });
-};
 
 const loginStart = () => ({
   type: LOGIN_START,
@@ -81,7 +53,6 @@ export const login = (name, password) => (dispatch) => {
     .post('/login', loginData)
     .then((response) => {
       localStorage.setItem('token', response.data.token);
-
       axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
       dispatch(loginSuccess(response.data.token));

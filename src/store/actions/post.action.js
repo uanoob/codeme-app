@@ -1,8 +1,5 @@
 import axios from '../../axios';
 import {
-  GET_ALL_POSTS_START,
-  GET_ALL_POSTS_SUCCESS,
-  GET_ALL_POSTS_FAIL,
   CREATE_POST_START,
   CREATE_POST_SUCCESS,
   CREATE_POST_FAIL,
@@ -12,42 +9,12 @@ import {
   UPDATE_POST_START,
   UPDATE_POST_SUCCESS,
   UPDATE_POST_FAIL,
-  GET_POST_BY_CATEGORY_START,
-  GET_POST_BY_CATEGORY_SUCCESS,
-  GET_POST_BY_CATEGORY_FAIL,
   GET_POST_BY_ID_START,
   GET_POST_BY_ID_SUCCESS,
   GET_POST_BY_ID_FAIL,
-  GET_ALL_POSTS_BY_AUTHOR_ID_START,
-  GET_ALL_POSTS_BY_AUTHOR_ID_SUCCESS,
-  GET_ALL_POSTS_BY_AUTHOR_ID_FAIL,
 } from './types';
 
-const getAllPostsByAuthorIdStart = () => ({
-  type: GET_ALL_POSTS_BY_AUTHOR_ID_START,
-});
-
-const getAllPostsByAuthorIdSuccess = posts => ({
-  type: GET_ALL_POSTS_BY_AUTHOR_ID_SUCCESS,
-  posts,
-});
-
-const getAllPostsByAuthorIdFail = error => ({
-  type: GET_ALL_POSTS_BY_AUTHOR_ID_FAIL,
-  error,
-});
-
-export const getAllPostsByAuthorId = id => (dispatch) => {
-  dispatch(getAllPostsByAuthorIdStart());
-  axios
-    .get(`/post/author/${id}`)
-    .then((response) => {
-      dispatch(getAllPostsByAuthorIdSuccess(response.data.data));
-    })
-    .catch((err) => {
-      dispatch(getAllPostsByAuthorIdFail(err));
-    });
-};
+import { getAllPostsByAuthorId } from './root.action';
 
 const deletePostStart = () => ({
   type: DELETE_POST_START,
@@ -117,32 +84,6 @@ export const updatePosts = (
     });
 };
 
-const getAllPostsStart = () => ({
-  type: GET_ALL_POSTS_START,
-});
-
-const getAllPostsSuccess = posts => ({
-  type: GET_ALL_POSTS_SUCCESS,
-  posts,
-});
-
-const getAllPostsFail = error => ({
-  type: GET_ALL_POSTS_FAIL,
-  error,
-});
-
-export const getAllPosts = () => (dispatch) => {
-  dispatch(getAllPostsStart());
-  axios
-    .get('/post')
-    .then((response) => {
-      dispatch(getAllPostsSuccess(response.data.data));
-    })
-    .catch((err) => {
-      dispatch(getAllPostsFail(err));
-    });
-};
-
 const createPostStart = () => ({
   type: CREATE_POST_START,
 });
@@ -181,32 +122,6 @@ export const createPosts = (
     })
     .catch((err) => {
       dispatch(createPostFail(err));
-    });
-};
-
-const getPostByCategoryStart = () => ({
-  type: GET_POST_BY_CATEGORY_START,
-});
-
-const getPostByCategorySuccess = posts => ({
-  type: GET_POST_BY_CATEGORY_SUCCESS,
-  posts,
-});
-
-const getPostByCategoryFail = error => ({
-  type: GET_POST_BY_CATEGORY_FAIL,
-  error,
-});
-
-export const getPostsByCategory = name => (dispatch) => {
-  dispatch(getPostByCategoryStart());
-  axios
-    .get(`/post/category/${name}`)
-    .then((response) => {
-      dispatch(getPostByCategorySuccess(response.data.posts));
-    })
-    .catch((err) => {
-      dispatch(getPostByCategoryFail(err));
     });
 };
 

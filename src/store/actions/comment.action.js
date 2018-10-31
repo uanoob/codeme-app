@@ -6,6 +6,9 @@ import {
   CREATE_COMMENT_START,
   CREATE_COMMENT_SUCCESS,
   CREATE_COMMENT_FAIL,
+  DELETE_COMMENT_START,
+  DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_FAIL,
 } from './types';
 
 const getCommentsByPostIdStart = () => ({
@@ -63,5 +66,31 @@ export const createComment = (body, authorId, authorName, postId) => (dispatch) 
     })
     .catch((err) => {
       dispatch(createCommentFail(err));
+    });
+};
+
+const deleteCommentStart = () => ({
+  type: DELETE_COMMENT_START,
+});
+
+const deleteCommentSuccess = () => ({
+  type: DELETE_COMMENT_SUCCESS,
+});
+
+const deleteCommentFail = error => ({
+  type: DELETE_COMMENT_FAIL,
+  error,
+});
+
+export const deleteComment = (postId, commentId) => (dispatch) => {
+  dispatch(deleteCommentStart());
+  axios
+    .delete(`/comment/${commentId}`)
+    .then(() => {
+      dispatch(deleteCommentSuccess());
+      dispatch(getCommentsByPostId(postId));
+    })
+    .catch((err) => {
+      dispatch(deleteCommentFail(err));
     });
 };

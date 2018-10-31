@@ -43,9 +43,9 @@ export const UPDATE_POST_START = '[post] update post start';
 export const UPDATE_POST_SUCCESS = '[post] update post success';
 export const UPDATE_POST_FAIL = '[post] update post fail';
 
-export const GET_POST_BY_CATEGORY_START = '[post] get post by category start';
-export const GET_POST_BY_CATEGORY_SUCCESS = '[post] get post by category success';
-export const GET_POST_BY_CATEGORY_FAIL = '[post] get post by category fail';
+export const GET_ALL_POSTS_BY_CATEGORY_START = '[post] get all posts by category start';
+export const GET_ALL_POSTS_BY_CATEGORY_SUCCESS = '[post] get all posts by category success';
+export const GET_ALL_POSTS_BY_CATEGORY_FAIL = '[post] get all posts by category fail';
 
 export const GET_POST_BY_ID_START = '[post] get post by id start';
 export const GET_POST_BY_ID_SUCCESS = '[post] get post by id success';
@@ -62,3 +62,7 @@ export const GET_COMMENTS_BY_POST_ID_FAIL = '[comment] get comments by post id f
 export const CREATE_COMMENT_START = '[comment] create comment start';
 export const CREATE_COMMENT_SUCCESS = '[comment] create comment success';
 export const CREATE_COMMENT_FAIL = '[comment] create comment fail';
+
+export const DELETE_COMMENT_START = '[comment] delete comment start';
+export const DELETE_COMMENT_SUCCESS = '[comment] delete comment success';
+export const DELETE_COMMENT_FAIL = '[comment] delete comment fail';

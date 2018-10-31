@@ -11,6 +11,7 @@ const initialState = {
   categories: [],
   category: null,
   loading: false,
+  loaded: false,
   error: null,
 };
 
@@ -26,12 +27,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
+        loaded: true,
         categories: action.categories,
       };
     case GET_ALL_CATEGORIES_FAIL:
       return {
         ...state,
         loading: false,
+        loaded: false,
         error: action.error,
       };
     case GET_SINGLE_CATEGORY_BY_ID_START:
@@ -44,12 +47,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
+        loaded: true,
         category: action.category,
       };
     case GET_SINGLE_CATEGORY_BY_ID_FAIL:
       return {
         ...state,
         loading: false,
+        loaded: false,
         error: action.error,
       };
     default:

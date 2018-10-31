@@ -1,15 +1,18 @@
 import {
-  LOGIN_START,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
+  GET_USER_BY_TOKEN_START,
+  GET_USER_BY_TOKEN_SUCCESS,
+  GET_USER_BY_TOKEN_FAIL,
+  IS_LOGINED,
   LOGOUT,
-  AUTH_START,
-  AUTH_SUCCESS,
-  AUTH_FAIL,
 } from '../actions/types';
 
 const initialState = {
-  token: null,
+  user: {
+    id: '',
+    login: '',
+    password: '',
+  },
+  isLogined: false,
   loading: false,
   loaded: false,
   error: null,
@@ -17,50 +20,41 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case LOGIN_START:
+    case GET_USER_BY_TOKEN_START:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case LOGIN_SUCCESS:
+    case GET_USER_BY_TOKEN_SUCCESS:
       return {
         ...state,
-        token: action.token,
+        user: action.user,
         loading: false,
         loaded: true,
         error: null,
       };
-    case LOGIN_FAIL:
+    case GET_USER_BY_TOKEN_FAIL:
       return {
         ...state,
         loading: false,
         error: action.error,
       };
-    case AUTH_START:
+    case IS_LOGINED:
       return {
         ...state,
-        loading: true,
+        isLogined: action.isLogined,
         error: null,
-      };
-    case AUTH_SUCCESS:
-      return {
-        ...state,
-        token: action.token,
-        loading: false,
-        loaded: true,
-        error: null,
-      };
-    case AUTH_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
       };
     case LOGOUT:
       return {
         ...state,
-        token: null,
+        user: {
+          id: '',
+          login: '',
+          password: '',
+        },
+        isLogined: false,
       };
     default:
       return state;

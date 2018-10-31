@@ -1,6 +1,8 @@
 export {
-  auth, isLogined, logout, login, getUserByToken, authCheckState,
+  auth, isLogined, logout, login, authCheckState,
 } from './auth.action';
+
+export { getUserByToken } from './user.action';
 
 export {
   setNameInputValid,
@@ -13,14 +15,13 @@ export {
 
 export { getAllCategories, getSingleCategoryById } from './category.action';
 
+export { getAllPosts, getAllPostsByAuthorId, getAllPostsByCategory } from './posts.action';
+
 export {
-  getAllPosts,
   createPosts,
   updatePosts,
   deletePosts,
-  getPostsByCategory,
   getPostById,
-  getAllPostsByAuthorId,
 } from './post.action';
 
-export { getCommentsByPostId, createComment } from './comment.action';
+export { getCommentsByPostId, createComment, deleteComment } from './comment.action';
