@@ -72,7 +72,7 @@ const PostTemplate = (props) => {
             <ListItemText primary={body} />
             <ListItemSecondaryAction>
               <IconButton aria-label="Delete">
-                <DeleteIcon onClick={handleDeletePost()} />
+                <DeleteIcon onClick={() => handleDeletePost()} />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
