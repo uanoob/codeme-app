@@ -7,11 +7,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import PostTemplate from '../../components/postTemplate/PostTemplate';
+import Preloader from '../../components/preloader/PreLoader';
 import {
   getAllPosts,
   getPostById,
-  getCommentsByPostId,
-  getAllPostsByAuthorId,
   deletePosts,
   updatePosts,
 } from '../../store/actions/root.action';
@@ -36,20 +35,27 @@ class Posts extends React.Component {
     onGetAllPosts();
   }
 
+  handlePreloader = loading => (loading ? (
+    <Preloader />
+  ) : (
+    <List component="nav">
+      <ListItem>
+        <ListItemText primary="No post here  :(" />
+      </ListItem>
+    </List>
+  ));
+
   handleColor = string => stringToColor(string);
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
   handleSelectedPost = (postId) => {
-    const { onGetPostById, onGetCommentsByPostId, history } = this.props;
-    onGetPostById(postId);
-    onGetCommentsByPostId(postId);
-    history.push('/post');
+    const { history } = this.props;
+    history.push(`/post/${postId}`);
   };
 
   handleAuthorPosts = (authorId) => {
-    const { history, onGetAllPostsByAuthorId } = this.props;
-    onGetAllPostsByAuthorId(authorId);
+    const { history } = this.props;
     history.push(`/author/${authorId}`);
   };
 
@@ -60,15 +66,13 @@ class Posts extends React.Component {
     onDeletePosts(postId, authorId);
   };
 
-  handleUpdatePost = (postId) => {
-    console.log(postId);
-  };
-
   render() {
-    const { posts, classes } = this.props;
+    const {
+      loading, loaded, posts, classes,
+    } = this.props;
     const { expanded } = this.state;
 
-    return posts.length !== 0 ? (
+    return loaded && posts.length !== 0 ? (
       <div className={classes.root}>
         <List component="nav">
           {posts.map(post => (
@@ -95,13 +99,7 @@ class Posts extends React.Component {
         </List>
       </div>
     ) : (
-      <div className={classes.root}>
-        <List component="nav">
-          <ListItem>
-            <ListItemText primary="No post here  :(" />
-          </ListItem>
-        </List>
-      </div>
+      this.handlePreloader(loading)
     );
   }
 }
@@ -112,11 +110,7 @@ Posts.propTypes = {
     nested: PropTypes.string.isRequired,
   }).isRequired,
   onGetAllPosts: PropTypes.func.isRequired,
-  onGetPostById: PropTypes.func.isRequired,
-  onGetCommentsByPostId: PropTypes.func.isRequired,
-  onGetAllPostsByAuthorId: PropTypes.func.isRequired,
   onDeletePosts: PropTypes.func.isRequired,
-  // onUpdatePosts: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -128,18 +122,20 @@ Posts.propTypes = {
       category_name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  loading: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  posts: state.posts.posts,
+  loading: state.allPosts.loading,
+  loaded: state.allPosts.loaded,
+  posts: state.allPosts.posts,
 });
 
 const mapDispatchToProps = {
   onGetAllPosts: getAllPosts,
   onGetPostById: getPostById,
-  onGetCommentsByPostId: getCommentsByPostId,
-  onGetAllPostsByAuthorId: getAllPostsByAuthorId,
   onDeletePosts: deletePosts,
   onUpdatePosts: updatePosts,
 };

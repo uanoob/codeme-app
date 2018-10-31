@@ -12,7 +12,6 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -22,6 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import { getAllPostsByAuthorId, deletePosts } from '../../store/actions/root.action';
 import ProfileForm from './ProfileForm';
+import Preloader from '../../components/preloader/PreLoader';
 import stringToColor from '../../utils/stringToColor';
 
 const styles = theme => ({
@@ -55,7 +55,8 @@ class ProfilePage extends React.Component {
   state = { expanded: false };
 
   componentDidMount() {
-    const { userId, onGetAllPostsByAuthorId } = this.props;
+    const { match, onGetAllPostsByAuthorId } = this.props;
+    const userId = match.params.id;
     onGetAllPostsByAuthorId(userId);
   }
 
@@ -73,19 +74,23 @@ class ProfilePage extends React.Component {
     onDeletePosts(postId);
   };
 
+  handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
+
   render() {
-    const { classes, userName, userPosts } = this.props;
+    const {
+      classes, user, userPosts, loaded, loading,
+    } = this.props;
     const { expanded } = this.state;
 
-    return (
+    return loaded ? (
       <Card className={classes.card}>
         <CardHeader
           avatar={(
-            <Avatar aria-label="Recipe" style={{ backgroundColor: this.handleColor(userName) }}>
-              {this.handleAuthorAvatar(userName)}
+            <Avatar aria-label="Recipe" style={{ backgroundColor: this.handleColor(user.login) }}>
+              {this.handleAuthorAvatar(user.login)}
             </Avatar>
 )}
-          title={userName}
+          title={user.login}
         />
         <CardContent />
         <ProfileForm />
@@ -110,7 +115,7 @@ class ProfilePage extends React.Component {
                   <Paper className={classes.paper}>
                     <ListItem>
                       <ListItemAvatar>
-                        <Avatar style={{ backgroundColor: this.handleColor(post.body) }}>
+                        <Avatar style={{ backgroundColor: this.handleColor(post.title) }}>
                           <FolderIcon />
                         </Avatar>
                       </ListItemAvatar>
@@ -139,6 +144,8 @@ class ProfilePage extends React.Component {
           </CardContent>
         </Collapse>
       </Card>
+    ) : (
+      this.handlePreloader(loading)
     );
   }
 }
@@ -162,16 +169,22 @@ ProfilePage.propTypes = {
       category_name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  userId: PropTypes.string.isRequired,
-  userName: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    login: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+  }).isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
   onDeletePosts: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  userId: state.auth.user.id,
-  userName: state.auth.user.login,
-  userPosts: state.posts.posts,
+  user: state.currentUser.user,
+  userPosts: state.allPosts.posts,
+  loaded: state.allPosts.loaded,
+  loading: state.allPosts.loading,
 });
 
 const mapDispatchToProps = {

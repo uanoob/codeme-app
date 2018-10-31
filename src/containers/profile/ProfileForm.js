@@ -78,11 +78,11 @@ class ProfileForm extends React.Component {
   submitHandler = (e) => {
     e.preventDefault();
 
-    const { onCreatePosts, authorId, authorName } = this.props;
+    const { onCreatePosts, user } = this.props;
     const {
       title, body, categoryId, category,
     } = this.state;
-    onCreatePosts(title, body, authorId, authorName, categoryId, category);
+    onCreatePosts(title, body, user.id, user.login, categoryId, category);
     this.setState({
       category: '',
       categoryId: undefined,
@@ -204,8 +204,11 @@ ProfileForm.propTypes = {
   categoryInputValid: PropTypes.bool.isRequired,
   titleInputValid: PropTypes.bool.isRequired,
   bodyInputValid: PropTypes.bool.isRequired,
-  authorId: PropTypes.string.isRequired,
-  authorName: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    login: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+  }).isRequired,
   onCreatePosts: PropTypes.func.isRequired,
 };
 
@@ -215,8 +218,7 @@ const mapStateToProps = state => ({
   titleInputValid: state.validation.isTitleInputValid,
   bodyInputValid: state.validation.isBodyInputValid,
   categoryId: state.categories.categories,
-  authorId: state.auth.user.id,
-  authorName: state.auth.user.login,
+  user: state.currentUser.user,
 });
 
 const mapDispatchToProps = {

@@ -14,12 +14,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import FolderIcon from '@material-ui/icons/Chat';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
 import { getAllPostsByAuthorId } from '../../store/actions/root.action';
@@ -143,6 +140,7 @@ class AuthorPage extends React.Component {
 }
 
 AuthorPage.propTypes = {
+  match: PropTypes.shape.isRequired,
   classes: PropTypes.shape({
     card: PropTypes.string.isRequired,
     actions: PropTypes.string.isRequired,

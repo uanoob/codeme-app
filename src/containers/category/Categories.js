@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Category from './Category';
-import { getAllCategories, getPostsByCategory } from '../../store/actions/root.action';
+import { getAllCategories, getAllPostsByCategory } from '../../store/actions/root.action';
+import Preloader from '../../components/preloader/PreLoader';
 
 const styles = theme => ({
   root: {
@@ -26,15 +27,19 @@ class Categories extends React.Component {
 
   handleSelectedCategory = (index, title) => {
     this.setState({ selectedIndex: index });
-    const { onGetPostsByCategory } = this.props;
-    onGetPostsByCategory(title);
+    const { onGetAllPostsByCategory } = this.props;
+    onGetAllPostsByCategory(title);
   };
 
+  handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
+
   render() {
-    const { categories, classes } = this.props;
+    const {
+      loading, loaded, categories, classes,
+    } = this.props;
     const { selectedIndex } = this.state;
 
-    return categories ? (
+    return loaded ? (
       <div className={classes.root}>
         <List component="nav">
           {categories.map(category => (
@@ -49,7 +54,9 @@ class Categories extends React.Component {
           ))}
         </List>
       </div>
-    ) : null;
+    ) : (
+      this.handlePreloader(loading)
+    );
   }
 }
 
@@ -58,7 +65,7 @@ Categories.propTypes = {
     root: PropTypes.string.isRequired,
   }).isRequired,
   onGetAllCategories: PropTypes.func.isRequired,
-  onGetPostsByCategory: PropTypes.func.isRequired,
+  onGetAllPostsByCategory: PropTypes.func.isRequired,
   categories: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -67,15 +74,19 @@ Categories.propTypes = {
       description: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  loading: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
+  loading: state.categories.loading,
+  loaded: state.categories.loaded,
   categories: state.categories.categories,
 });
 
 const mapDispatchToProps = {
   onGetAllCategories: getAllCategories,
-  onGetPostsByCategory: getPostsByCategory,
+  onGetAllPostsByCategory: getAllPostsByCategory,
 };
 
 export default withStyles(styles)(

@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Route, Switch, Redirect, withRouter,
 } from 'react-router-dom';
 import './App.css';
-import Layout from './hoc/Layout';
+import Header from './containers/header/Header';
 import MainPage from './components/main/MainPage';
 import LoginPage from './containers/auth/LoginPage';
 import RegisterPage from './containers/auth/RegisterPage';
-import PostPage from './containers/post/PostPage';
+import CurrentPost from './containers/post/CurrentPost';
 import ProfilePage from './containers/profile/ProfilePage';
 import AuthorPage from './containers/author/AuthorPage';
 import { authCheckState } from './store/actions/root.action';
@@ -33,14 +33,19 @@ class App extends Component {
       routes = (
         <Switch>
           <Route exact path="/main" component={MainPage} />
-          <Route exact path="/post" component={PostPage} />
-          <Route exact path="/profile" component={ProfilePage} />
+          <Route exact path="/post/:id" component={CurrentPost} />
+          <Route exact path="/profile/:id" component={ProfilePage} />
           <Route exact path="/author/:id" component={AuthorPage} />
           <Redirect to="/main" />
         </Switch>
       );
     }
-    return <Layout>{routes}</Layout>;
+    return (
+      <Fragment>
+        <Header />
+        {routes}
+      </Fragment>
+    );
   }
 }
 
@@ -50,7 +55,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAutenticated: state.auth.isLogined,
+  isAutenticated: state.currentUser.isLogined,
 });
 
 const mapDispatchToProps = {

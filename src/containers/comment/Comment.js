@@ -88,7 +88,12 @@ class Comments extends React.Component {
 }
 
 Comments.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.shape({
+    container: PropTypes.string.isRequired,
+    textField: PropTypes.string.isRequired,
+    dense: PropTypes.string.isRequired,
+    menu: PropTypes.string.isRequired,
+  }).isRequired,
   commentFieldValid: PropTypes.bool.isRequired,
   onSetCommentInputValid: PropTypes.func.isRequired,
   onCreateComment: PropTypes.func.isRequired,
@@ -99,9 +104,9 @@ Comments.propTypes = {
 
 const mapStateToProps = state => ({
   commentFieldValid: state.validation.isCommentInputValid,
-  postId: state.posts.post.id,
-  authorId: state.auth.user.id,
-  authorName: state.auth.user.login,
+  postId: state.currentPost.post.id,
+  authorId: state.currentUser.user.id,
+  authorName: state.currentUser.user.login,
 });
 
 const mapDispatchToProps = {

@@ -16,7 +16,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Comment from '../comment/Comment';
+import Preloader from '../../components/preloader/PreLoader';
+import { deleteComment, getPostById, getCommentsByPostId } from '../../store/actions/root.action';
 
 const styles = theme => ({
   card: {
@@ -25,10 +28,6 @@ const styles = theme => ({
     flexWrap: 'wrap',
     margin: 'auto',
     maxWidth: 400,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
   },
   actions: {
     display: 'flex',
@@ -51,18 +50,35 @@ const styles = theme => ({
   },
 });
 
-class RecipeReviewCard extends React.Component {
+class CurrentPost extends React.Component {
   state = { expanded: false };
+
+  componentDidMount() {
+    const { match, onGetPostById, onGetCommentsByPostId } = this.props;
+    const postId = match.params.id;
+    onGetPostById(postId);
+    onGetCommentsByPostId(postId);
+  }
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
   };
 
+  handleDeleteComment = (commentId) => {
+    const { match, onDeleteComment } = this.props;
+    const postId = match.params.id;
+    onDeleteComment(postId, commentId);
+  };
+
+  handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
+
   render() {
-    const { classes, post, comments } = this.props;
+    const {
+      loaded, loading, classes, post, comments,
+    } = this.props;
     const { expanded } = this.state;
 
-    return post ? (
+    return loaded ? (
       <Card className={classes.card}>
         <CardHeader
           avatar={(
@@ -106,29 +122,76 @@ class RecipeReviewCard extends React.Component {
               <div key={comment.id}>
                 <Typography paragraph>{comment.author_name}</Typography>
                 <Typography paragraph>{comment.body}</Typography>
+                <IconButton aria-label="Delete">
+                  <DeleteIcon onClick={() => this.handleDeleteComment(comment.id)} />
+                </IconButton>
               </div>
             ))}
           </CardContent>
         </Collapse>
         <Comment />
       </Card>
-    ) : null;
+    ) : this.handlePreloader(loading);
   }
 }
 
-RecipeReviewCard.propTypes = {
-  classes: PropTypes.object.isRequired,
+CurrentPost.propTypes = {
+  // match: PropTypes.shape({
+  //   isExact: PropTypes.bool.isRequired,
+  //   params: {
+  //     id: PropTypes.string.isRequired,
+  //     _proto_: PropTypes.shape({ valueOf: PropTypes.func.isRequired }),
+  //   },
+  //   path: PropTypes.string.isRequired,
+  //   url: PropTypes.string.isRequired,
+  // }).isRequired,
+  classes: PropTypes.shape({
+    card: PropTypes.string.isRequired,
+    actions: PropTypes.string.isRequired,
+    expand: PropTypes.string.isRequired,
+    expandOpen: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+  }).isRequired,
+  post: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string.isRequired,
+    author_id: PropTypes.string.isRequired,
+    author_name: PropTypes.string.isRequired,
+    category_id: PropTypes.string.isRequired,
+    category_name: PropTypes.string.isRequired,
+  }).isRequired,
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      body: PropTypes.string.isRequired,
+      author_id: PropTypes.string.isRequired,
+      author_name: PropTypes.string.isRequired,
+      post_id: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  onDeleteComment: PropTypes.func.isRequired,
+  onGetPostById: PropTypes.func.isRequired,
+  onGetCommentsByPostId: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  post: state.posts.post,
+  loading: state.currentPost.loading,
+  loaded: state.currentPost.loaded,
+  post: state.currentPost.post,
   comments: state.comments.comments,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  onGetPostById: getPostById,
+  onDeleteComment: deleteComment,
+  onGetCommentsByPostId: getCommentsByPostId,
+};
 
 export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(RecipeReviewCard),
+  )(CurrentPost),
 );
