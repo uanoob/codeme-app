@@ -38,7 +38,7 @@ class Header extends React.Component {
   };
 
   showNavBar() {
-    const { classes, isAutenticated } = this.props;
+    const { classes, isAutenticated, userId } = this.props;
     const renderIsAuth = () => (
       <div>
         <Link className={classes.link} to="/login">
@@ -54,7 +54,7 @@ class Header extends React.Component {
         <Link className={classes.link} to="/main">
           <Button color="inherit">Main</Button>
         </Link>
-        <Link className={classes.link} to="/profile">
+        <Link className={classes.link} to={`/profile/${userId}`}>
           <Button color="inherit">My Page</Button>
         </Link>
         <Button color="inherit" onClick={this.onHandleLogout}>
@@ -96,10 +96,12 @@ Header.propTypes = {
   classes: PropTypes.shape({ root: PropTypes.string.isRequired }).isRequired,
   onLogout: PropTypes.func.isRequired,
   isAutenticated: PropTypes.bool.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  isAutenticated: state.auth.isLogined,
+  isAutenticated: state.currentUser.isLogined,
+  userId: state.currentUser.user.id,
 });
 
 const mapDispatchToProps = {
