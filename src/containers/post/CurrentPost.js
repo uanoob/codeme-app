@@ -20,6 +20,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Comment from '../comment/Comment';
 import Preloader from '../../components/preloader/PreLoader';
 import { deleteComment, getPostById, getCommentsByPostId } from '../../store/actions/root.action';
+import stringToColor from '../../utils/stringToColor';
 
 const styles = theme => ({
   card: {
@@ -70,6 +71,10 @@ class CurrentPost extends React.Component {
     onDeleteComment(postId, commentId);
   };
 
+  handleColor = string => stringToColor(string);
+
+  handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
+
   handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
 
   render() {
@@ -82,8 +87,8 @@ class CurrentPost extends React.Component {
       <Card className={classes.card}>
         <CardHeader
           avatar={(
-            <Avatar aria-label="Recipe" className={classes.avatar}>
-              R
+            <Avatar aria-label="Recipe" style={{ backgroundColor: this.handleColor(post.author_name) }}>
+              {this.handleAuthorAvatar(post.author_name)}
             </Avatar>
 )}
           action={(
@@ -131,7 +136,9 @@ class CurrentPost extends React.Component {
         </Collapse>
         <Comment />
       </Card>
-    ) : this.handlePreloader(loading);
+    ) : (
+      this.handlePreloader(loading)
+    );
   }
 }
 

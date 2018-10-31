@@ -69,7 +69,6 @@ class ProfilePage extends React.Component {
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
   handlerDeletePost = (postId) => {
-    console.log(postId);
     const { onDeletePosts } = this.props;
     onDeletePosts(postId);
   };
