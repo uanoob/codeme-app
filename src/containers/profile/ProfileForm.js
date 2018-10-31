@@ -51,17 +51,10 @@ class ProfileForm extends React.Component {
   handleChangeCategory = (e) => {
     const { onSetCategoryInputValid } = this.props;
     onSetCategoryInputValid(checkValidity(e.target.value));
-    this.handleGetIdCategory(e.target.value);
     this.setState({
       touchedCategory: true,
       category: e.target.value,
     });
-  };
-
-  handleGetIdCategory = (title) => {
-    const { categories } = this.props;
-    const result = categories.filter(category => category.title === title);
-    console.log(result[0].id);
   };
 
   handleChangeTitle = (e) => {
@@ -106,7 +99,7 @@ class ProfileForm extends React.Component {
       classes, categories, categoryInputValid, titleInputValid, bodyInputValid,
     } = this.props;
     const {
-      category, touchedCategory, touchedTitle, touchedBody,
+      category, title, body, touchedCategory, touchedTitle, touchedBody,
     } = this.state;
 
     return (
@@ -115,6 +108,7 @@ class ProfileForm extends React.Component {
           <TextField
             id="title"
             label="Title"
+            value={title}
             placeholder="Title"
             className={classes.textField}
             margin="normal"
@@ -163,6 +157,7 @@ class ProfileForm extends React.Component {
             label="Write Post"
             multiline
             rows="4"
+            value={body}
             placeholder="Write Post"
             className={classes.textField}
             margin="normal"

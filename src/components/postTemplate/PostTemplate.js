@@ -29,6 +29,7 @@ const PostTemplate = (props) => {
     classes,
     handleSelectedPost,
     handleAuthorPosts,
+    handleDeletePost,
     handleColor,
     authorAvatar,
     authorColor,
@@ -71,7 +72,7 @@ const PostTemplate = (props) => {
             <ListItemText primary={body} />
             <ListItemSecondaryAction>
               <IconButton aria-label="Delete">
-                <DeleteIcon />
+                <DeleteIcon onClick={handleDeletePost()} />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
@@ -95,6 +96,7 @@ PostTemplate.propTypes = {
   handleSelectedPost: PropTypes.func.isRequired,
   handleAuthorPosts: PropTypes.func.isRequired,
   handleColor: PropTypes.func.isRequired,
+  handleDeletePost: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(PostTemplate);

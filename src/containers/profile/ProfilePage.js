@@ -67,9 +67,10 @@ class ProfilePage extends React.Component {
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
-  handlerDelete = (postId) => {
-    const { onDeletePost, userId } = this.props;
-    onDeletePost(postId, userId);
+  handlerDeletePost = (postId) => {
+    console.log(postId);
+    const { onDeletePosts } = this.props;
+    onDeletePosts(postId);
   };
 
   render() {
@@ -80,17 +81,9 @@ class ProfilePage extends React.Component {
       <Card className={classes.card}>
         <CardHeader
           avatar={(
-            <Avatar
-              aria-label="Recipe"
-              style={{ backgroundColor: this.handleColor(userPosts[0].author_name) }}
-            >
-              {this.handleAuthorAvatar(userPosts[0].author_name)}
+            <Avatar aria-label="Recipe" style={{ backgroundColor: this.handleColor(userName) }}>
+              {this.handleAuthorAvatar(userName)}
             </Avatar>
-)}
-          action={(
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
 )}
           title={userName}
         />
@@ -123,7 +116,10 @@ class ProfilePage extends React.Component {
                       </ListItemAvatar>
                       <ListItemText primary={post.title} />
                       <ListItemSecondaryAction>
-                        <IconButton aria-label="Delete" onClick={() => this.handlerDelete(post.id)}>
+                        <IconButton
+                          aria-label="Delete"
+                          onClick={() => this.handlerDeletePost(post.id)}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
@@ -169,7 +165,7 @@ ProfilePage.propTypes = {
   userId: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
-  onDeletePost: PropTypes.func.isRequired,
+  onDeletePosts: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -180,7 +176,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onGetAllPostsByAuthorId: getAllPostsByAuthorId,
-  onDeletePost: deletePosts,
+  onDeletePosts: deletePosts,
 };
 
 export default withStyles(styles)(
