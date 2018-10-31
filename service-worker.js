@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/codeme-app/precache-manifest.8e051baf063c8045654cae4aa2dea420.js"
+  "/codeme-app/precache-manifest.4454e7285ae69fd60d85d22e98595834.js"
 );
 
 workbox.clientsClaim();
