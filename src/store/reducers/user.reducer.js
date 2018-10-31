@@ -55,6 +55,7 @@ export default function (state = initialState, action) {
           password: '',
         },
         isLogined: false,
+        loaded: false,
       };
     default:
       return state;
