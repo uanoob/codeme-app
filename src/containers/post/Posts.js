@@ -71,7 +71,6 @@ class Posts extends React.Component {
   };
 
   handleUpdatePost = (postId) => {
-    console.log(postId);
     const { history } = this.props;
     history.push(`/post/update/${postId}`);
   };

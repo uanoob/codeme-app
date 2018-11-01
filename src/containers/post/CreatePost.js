@@ -14,7 +14,6 @@ import {
   createPosts,
 } from '../../store/actions/root.action';
 import checkValidity from '../../utils/validation.utils';
-import AuthorPage from '../author/AuthorPage';
 
 const styles = theme => ({
   container: {
@@ -98,7 +97,6 @@ class CreatePost extends React.Component {
   render() {
     const {
       classes,
-      user,
       categories,
       categoryInputValid,
       titleInputValid,
@@ -171,7 +169,6 @@ class CreatePost extends React.Component {
         >
           Create Post
         </Button>
-        <AuthorPage userId={user.id} />
       </div>
     );
   }
@@ -193,7 +190,6 @@ CreatePost.propTypes = {
     }),
   ).isRequired,
   onGetAllCategories: PropTypes.func.isRequired,
-  // onGetSingleCategoryById: PropTypes.func.isRequired,
   onSetCategoryInputValid: PropTypes.func.isRequired,
   onSetTitleInputValid: PropTypes.func.isRequired,
   onSetBodyInputValid: PropTypes.func.isRequired,

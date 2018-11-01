@@ -49,8 +49,8 @@ class AuthorPage extends React.Component {
   state = {};
 
   componentDidMount() {
-    const { match, onGetAllPostsByAuthorId, userId } = this.props;
-    onGetAllPostsByAuthorId(userId || match.params.id);
+    const { match, onGetAllPostsByAuthorId } = this.props;
+    onGetAllPostsByAuthorId(match.params.id);
   }
 
   handleExpandClick = () => {
@@ -82,52 +82,48 @@ class AuthorPage extends React.Component {
 
   render() {
     const {
-      classes, userPosts, loaded, loading, currentUserId,
+      classes, match, userPosts, currentUserId,
     } = this.props;
-    const { currentAuthorId } = this.state;
+    const currentAuthorId = match.params.id;
 
-    return loaded ? (
-      <div>
+    return (
+      <Card className={classes.card}>
         {this.handleShowCreatePost(currentUserId, currentAuthorId)}
-        <Card className={classes.card}>
-          {userPosts.length !== 0 ? (
-            userPosts.map(post => (
-              <div key={post.id}>
-                <Paper className={classes.paper}>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar style={{ backgroundColor: this.handleColor(post.title) }}>
-                        <FolderIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={post.title} />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        aria-label="Forward"
-                        onClick={() => this.handleCurrentPost(post.id)}
-                      >
-                        <Forward />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={this.handlePostLength(post.body)} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary={post.category_name} />
-                  </ListItem>
-                </Paper>
-              </div>
-            ))
-          ) : (
-            <Card>
-              <Typography>No any post here :(</Typography>
-            </Card>
-          )}
-        </Card>
-      </div>
-    ) : (
-      this.handlePreloader(loading)
+        {userPosts.length !== 0 ? (
+          userPosts.map(post => (
+            <div key={post.id}>
+              <Paper className={classes.paper}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar style={{ backgroundColor: this.handleColor(post.title) }}>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={post.title} />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      aria-label="Forward"
+                      onClick={() => this.handleCurrentPost(post.id)}
+                    >
+                      <Forward />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={this.handlePostLength(post.body)} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={post.category_name} />
+                </ListItem>
+              </Paper>
+            </div>
+          ))
+        ) : (
+          <Card>
+            <Typography>No any post here :(</Typography>
+          </Card>
+        )}
+      </Card>
     );
   }
 }
@@ -154,17 +150,12 @@ AuthorPage.propTypes = {
   ).isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
   onDeletePosts: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  loaded: PropTypes.bool.isRequired,
   currentUserId: PropTypes.string.isRequired,
-  userId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   currentUserId: state.currentUser.user.id,
   userPosts: state.allPosts.posts,
-  loaded: state.allPosts.loaded,
-  loading: state.allPosts.loading,
 });
 
 const mapDispatchToProps = {

@@ -54,7 +54,7 @@ class Header extends React.Component {
         <Link className={classes.link} to="/main">
           <Button color="inherit">Main</Button>
         </Link>
-        <Link className={classes.link} to={`/profile/${userId}`}>
+        <Link className={classes.link} to={`/author/${userId}`}>
           <Button color="inherit">My Page</Button>
         </Link>
         <Button color="inherit" onClick={this.onHandleLogout}>

@@ -11,9 +11,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ForwardIcon from '@material-ui/icons/Forward';
 import FolderIcon from '@material-ui/icons/Chat';
@@ -98,8 +96,6 @@ PostTemplate.propTypes = {
   handleCurrentPost: PropTypes.func.isRequired,
   handleAuthorPosts: PropTypes.func.isRequired,
   handleColor: PropTypes.func.isRequired,
-  handleDeletePost: PropTypes.func.isRequired,
-  handleUpdatePost: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(PostTemplate);
