@@ -9,9 +9,10 @@ import Header from './containers/header/Header';
 import MainPage from './components/main/MainPage';
 import LoginPage from './containers/auth/LoginPage';
 import RegisterPage from './containers/auth/RegisterPage';
-import CurrentPost from './containers/post/CurrentPost';
-import ProfilePage from './containers/profile/ProfilePage';
+import CreatePost from './containers/post/CreatePost';
+// import UpdatePost from './containers/post/CurrentPost';
 import AuthorPage from './containers/author/AuthorPage';
+import CurrentPost from './containers/post/CurrentPost';
 import { authCheckState } from './store/actions/root.action';
 
 class App extends Component {
@@ -33,9 +34,10 @@ class App extends Component {
       routes = (
         <Switch>
           <Route exact path="/main" component={MainPage} />
-          <Route exact path="/post/:id" component={CurrentPost} />
-          <Route exact path="/profile/:id" component={ProfilePage} />
+          <Route exact path="/profile/:id" component={CreatePost} />
+          {/* <Route exact path="post/update/:id" component={UpdatePost} /> */}
           <Route exact path="/author/:id" component={AuthorPage} />
+          <Route exact path="/post/:id" component={CurrentPost} />
           <Redirect to="/main" />
         </Switch>
       );

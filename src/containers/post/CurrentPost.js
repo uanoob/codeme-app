@@ -15,7 +15,12 @@ import red from '@material-ui/core/colors/red';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+// import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+// import ForwardIcon from '@material-ui/icons/Forward';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Comment from '../comment/Comment';
 import Preloader from '../../components/preloader/PreLoader';
@@ -87,14 +92,12 @@ class CurrentPost extends React.Component {
       <Card className={classes.card}>
         <CardHeader
           avatar={(
-            <Avatar aria-label="Recipe" style={{ backgroundColor: this.handleColor(post.author_name) }}>
+            <Avatar
+              aria-label="Recipe"
+              style={{ backgroundColor: this.handleColor(post.author_name) }}
+            >
               {this.handleAuthorAvatar(post.author_name)}
             </Avatar>
-)}
-          action={(
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
 )}
           title={post.author_name}
           subheader={post.title}
@@ -122,19 +125,26 @@ class CurrentPost extends React.Component {
           </IconButton>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Comment />
           <CardContent>
             {comments.map(comment => (
-              <div key={comment.id}>
-                <Typography paragraph>{comment.author_name}</Typography>
-                <Typography paragraph>{comment.body}</Typography>
-                <IconButton aria-label="Delete">
-                  <DeleteIcon onClick={() => this.handleDeleteComment(comment.id)} />
-                </IconButton>
-              </div>
+              <ListItem key={comment.id}>
+                <ListItemAvatar>
+                  <Avatar style={{ backgroundColor: this.handleColor(comment.author_name) }}>
+                    {this.handleAuthorAvatar(comment.author_name)}
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={comment.author_name} />
+                <ListItemText primary={comment.body} />
+                <ListItemSecondaryAction>
+                  <IconButton aria-label="Delete">
+                    <DeleteIcon onClick={() => this.handleDeleteComment(comment.id)} />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
             ))}
           </CardContent>
         </Collapse>
-        <Comment />
       </Card>
     ) : (
       this.handlePreloader(loading)
@@ -143,15 +153,6 @@ class CurrentPost extends React.Component {
 }
 
 CurrentPost.propTypes = {
-  // match: PropTypes.shape({
-  //   isExact: PropTypes.bool.isRequired,
-  //   params: {
-  //     id: PropTypes.string.isRequired,
-  //     _proto_: PropTypes.shape({ valueOf: PropTypes.func.isRequired }),
-  //   },
-  //   path: PropTypes.string.isRequired,
-  //   url: PropTypes.string.isRequired,
-  // }).isRequired,
   classes: PropTypes.shape({
     card: PropTypes.string.isRequired,
     actions: PropTypes.string.isRequired,

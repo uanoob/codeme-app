@@ -28,7 +28,7 @@ const styles = theme => ({
 });
 
 class Posts extends React.Component {
-  state = {};
+  state = { expanded: false };
 
   componentDidMount() {
     const { onGetAllPosts } = this.props;
@@ -49,7 +49,7 @@ class Posts extends React.Component {
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
-  handleSelectedPost = (postId) => {
+  handleCurrentPost = (postId) => {
     const { history } = this.props;
     history.push(`/post/${postId}`);
   };
@@ -59,11 +59,21 @@ class Posts extends React.Component {
     history.push(`/author/${authorId}`);
   };
 
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
+
   handleColor = string => stringToColor(string);
 
   handleDeletePost = (postId, authorId) => {
     const { onDeletePosts } = this.props;
     onDeletePosts(postId, authorId);
+  };
+
+  handleUpdatePost = (postId) => {
+    console.log(postId);
+    const { history } = this.props;
+    history.push(`/post/update/${postId}`);
   };
 
   render() {
@@ -87,7 +97,7 @@ class Posts extends React.Component {
               authorName={post.author_name}
               categoryId={post.category_id}
               categoryName={post.category_name}
-              handleSelectedPost={() => this.handleSelectedPost(post.id)}
+              handleCurrentPost={() => this.handleCurrentPost(post.id)}
               handleAuthorPosts={() => this.handleAuthorPosts(post.author_id)}
               handleExpandClick={() => this.handleExpandClick()}
               handleColor={() => this.handleColor(post.body)}

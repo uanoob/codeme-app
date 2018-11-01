@@ -8,11 +8,15 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ForwardIcon from '@material-ui/icons/Forward';
 import FolderIcon from '@material-ui/icons/Chat';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = () => ({
   card: {
@@ -27,9 +31,8 @@ const styles = () => ({
 const PostTemplate = (props) => {
   const {
     classes,
-    handleSelectedPost,
+    handleCurrentPost,
     handleAuthorPosts,
-    handleDeletePost,
     handleColor,
     authorAvatar,
     authorColor,
@@ -44,7 +47,7 @@ const PostTemplate = (props) => {
         avatar={(
           <IconButton>
             <Avatar
-              aria-label="Recipe"
+              aria-label="Avatar"
               className={classes.avatar}
               onClick={handleAuthorPosts}
               style={{ backgroundColor: authorColor }}
@@ -55,28 +58,27 @@ const PostTemplate = (props) => {
 )}
         action={(
           <IconButton>
-            <MoreVertIcon onClick={handleSelectedPost} />
+            <ForwardIcon onClick={handleCurrentPost} />
           </IconButton>
 )}
         title={authorName}
         subheader={categoryName}
       />
+
       <CardContent>
-        <CardContent>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={{ backgroundColor: handleColor() }}>
-                <FolderIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={body} />
-            <ListItemSecondaryAction>
-              <IconButton aria-label="Delete">
-                <DeleteIcon onClick={() => handleDeletePost()} />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        </CardContent>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} />
+          <ExpansionPanelDetails>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar style={{ backgroundColor: handleColor() }}>
+                  <FolderIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={body} />
+            </ListItem>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </CardContent>
     </Card>
   );
@@ -93,10 +95,11 @@ PostTemplate.propTypes = {
   authorName: PropTypes.string.isRequired,
   categoryName: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
-  handleSelectedPost: PropTypes.func.isRequired,
+  handleCurrentPost: PropTypes.func.isRequired,
   handleAuthorPosts: PropTypes.func.isRequired,
   handleColor: PropTypes.func.isRequired,
   handleDeletePost: PropTypes.func.isRequired,
+  handleUpdatePost: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(PostTemplate);

@@ -14,6 +14,7 @@ import {
   createPosts,
 } from '../../store/actions/root.action';
 import checkValidity from '../../utils/validation.utils';
+import AuthorPage from '../author/AuthorPage';
 
 const styles = theme => ({
   container: {
@@ -32,7 +33,7 @@ const styles = theme => ({
   },
 });
 
-class ProfileForm extends React.Component {
+class CreatePost extends React.Component {
   state = {
     category: '',
     categoryId: undefined,
@@ -96,7 +97,12 @@ class ProfileForm extends React.Component {
 
   render() {
     const {
-      classes, categories, categoryInputValid, titleInputValid, bodyInputValid,
+      classes,
+      user,
+      categories,
+      categoryInputValid,
+      titleInputValid,
+      bodyInputValid,
     } = this.props;
     const {
       category, title, body, touchedCategory, touchedTitle, touchedBody,
@@ -116,17 +122,6 @@ class ProfileForm extends React.Component {
             onChange={this.handleChangeTitle}
             error={!titleInputValid && touchedTitle}
           />
-
-          {/* <TextField
-            id="addNewCategory"
-            label="Add New Category"
-            placeholder="Add New Category"
-            className={classes.textField}
-            margin="normal"
-            variant="filled"
-            onChange={this.handleChangeCategory}
-            error={!categoryInputValid && touchedCategory}
-          /> */}
 
           <TextField
             id="filled-select-category"
@@ -176,12 +171,13 @@ class ProfileForm extends React.Component {
         >
           Create Post
         </Button>
+        <AuthorPage userId={user.id} />
       </div>
     );
   }
 }
 
-ProfileForm.propTypes = {
+CreatePost.propTypes = {
   classes: PropTypes.shape({
     container: PropTypes.string.isRequired,
     textField: PropTypes.string.isRequired,
@@ -234,5 +230,5 @@ export default withStyles(styles)(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(ProfileForm),
+  )(CreatePost),
 );

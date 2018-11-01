@@ -2,25 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import FolderIcon from '@material-ui/icons/Chat';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Forward from '@material-ui/icons/Forward';
 import Paper from '@material-ui/core/Paper';
-import { getAllPostsByAuthorId } from '../../store/actions/root.action';
+import { getAllPostsByAuthorId, deletePosts } from '../../store/actions/root.action';
+import Preloader from '../../components/preloader/PreLoader';
 import stringToColor from '../../utils/stringToColor';
+import CreatePost from '../post/CreatePost';
 
 const styles = theme => ({
   card: {
@@ -29,13 +25,6 @@ const styles = theme => ({
     flexWrap: 'wrap',
     margin: 'auto',
     maxWidth: 400,
-  },
-  paper: {
-    padding: theme.spacing.unit,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    whiteSpace: 'nowrap',
-    marginBottom: theme.spacing.unit,
   },
   actions: {
     display: 'flex',
@@ -57,13 +46,11 @@ const styles = theme => ({
 });
 
 class AuthorPage extends React.Component {
-  state = { expanded: false };
+  state = {};
 
   componentDidMount() {
-    const { match } = this.props;
-    const userId = match.params.id;
-    const { onGetAllPostsByAuthorId } = this.props;
-    onGetAllPostsByAuthorId(userId);
+    const { match, onGetAllPostsByAuthorId, userId } = this.props;
+    onGetAllPostsByAuthorId(userId || match.params.id);
   }
 
   handleExpandClick = () => {
@@ -74,73 +61,78 @@ class AuthorPage extends React.Component {
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
-  render() {
-    const { classes, userName, userPosts } = this.props;
-    const { expanded } = this.state;
+  handlerDeletePost = (postId) => {
+    const { onDeletePosts } = this.props;
+    onDeletePosts(postId);
+  };
 
-    return (
-      <Card className={classes.card}>
-        <CardHeader
-          avatar={(
-            <Avatar aria-label="Recipe" style={{ backgroundColor: this.handleColor(userName) }}>
-              {this.handleAuthorAvatar(userName)}
-            </Avatar>
-)}
-          title={userName}
-        />
-        <CardContent />
-        <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton
-            className={classnames(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={this.handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="Show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            {userPosts.length !== 0 ? (
-              userPosts.map(post => (
-                <div key={post.id}>
-                  <Paper className={classes.paper}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar style={{ backgroundColor: this.handleColor(post.body) }}>
-                          <FolderIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary={post.title} />
-                      <ListItemSecondaryAction>
-                        <IconButton aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={post.body} />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={post.category_name} />
-                    </ListItem>
-                  </Paper>
-                </div>
-              ))
-            ) : (
+  handleCurrentPost = (postId) => {
+    const { history } = this.props;
+    history.push(`/post/${postId}`);
+  };
+
+  handlePostLength = (postBody) => {
+    const length = 70;
+    return postBody.length > length ? `${postBody.substring(0, length - 3)}...` : postBody;
+  };
+
+  handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
+
+  handleShowCreatePost = (currentUserId, currentAuthorId) => (currentUserId === currentAuthorId ? <CreatePost /> : null);
+
+  render() {
+    const {
+      classes, userPosts, loaded, loading, currentUserId,
+    } = this.props;
+    const { currentAuthorId } = this.state;
+
+    return loaded ? (
+      <div>
+        {this.handleShowCreatePost(currentUserId, currentAuthorId)}
+        <Card className={classes.card}>
+          {userPosts.length !== 0 ? (
+            userPosts.map(post => (
+              <div key={post.id}>
+                <Paper className={classes.paper}>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: this.handleColor(post.title) }}>
+                        <FolderIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={post.title} />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        aria-label="Forward"
+                        onClick={() => this.handleCurrentPost(post.id)}
+                      >
+                        <Forward />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={this.handlePostLength(post.body)} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary={post.category_name} />
+                  </ListItem>
+                </Paper>
+              </div>
+            ))
+          ) : (
+            <Card>
               <Typography>No any post here :(</Typography>
-            )}
-          </CardContent>
-        </Collapse>
-      </Card>
+            </Card>
+          )}
+        </Card>
+      </div>
+    ) : (
+      this.handlePreloader(loading)
     );
   }
 }
 
 AuthorPage.propTypes = {
-  match: PropTypes.shape.isRequired,
   classes: PropTypes.shape({
     card: PropTypes.string.isRequired,
     actions: PropTypes.string.isRequired,
@@ -148,6 +140,7 @@ AuthorPage.propTypes = {
     expandOpen: PropTypes.string.isRequired,
     avatar: PropTypes.string.isRequired,
   }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
   userPosts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -159,17 +152,24 @@ AuthorPage.propTypes = {
       category_name: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  userName: PropTypes.string.isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
+  onDeletePosts: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
+  currentUserId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  userName: state.posts.posts[0].author_name,
-  userPosts: state.posts.posts,
+  currentUserId: state.currentUser.user.id,
+  userPosts: state.allPosts.posts,
+  loaded: state.allPosts.loaded,
+  loading: state.allPosts.loading,
 });
 
 const mapDispatchToProps = {
   onGetAllPostsByAuthorId: getAllPostsByAuthorId,
+  onDeletePosts: deletePosts,
 };
 
 export default withStyles(styles)(
