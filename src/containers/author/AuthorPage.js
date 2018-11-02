@@ -71,8 +71,8 @@ class AuthorPage extends React.Component {
     onDeletePosts(postId, authorId);
   };
 
-  handleUpdatePost = (postId) => {
-    console.log(postId);
+  handleUpdatePost = () => {
+    console.log('Coming soon');
   };
 
   handleCurrentPost = (postId) => {
