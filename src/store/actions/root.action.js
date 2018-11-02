@@ -2,7 +2,7 @@ export {
   auth, isLogined, logout, login, authCheckState,
 } from './auth.action';
 
-export { getUserByToken } from './user.action';
+export { getUserByToken, setIsAuthor } from './user.action';
 
 export {
   setNameInputValid,

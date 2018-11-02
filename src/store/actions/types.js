@@ -23,6 +23,8 @@ export const GET_ALL_CATEGORIES_START = '[category] get all categories start';
 export const GET_ALL_CATEGORIES_SUCCESS = '[category] get all categories success';
 export const GET_ALL_CATEGORIES_FAIL = '[category] get all categories fail';
 
+export const SET_IS_AUTHOR = '[user] set is author';
+
 export const GET_SINGLE_CATEGORY_BY_ID_START = '[category] get single category by id start';
 export const GET_SINGLE_CATEGORY_BY_ID_SUCCESS = '[category]  single category by id success';
 export const GET_SINGLE_CATEGORY_BY_ID_FAIL = '[category] get single category by id fail';

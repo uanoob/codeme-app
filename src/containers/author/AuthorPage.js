@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -11,9 +11,11 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import FolderIcon from '@material-ui/icons/Chat';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Forward from '@material-ui/icons/Forward';
 import Paper from '@material-ui/core/Paper';
-import { getAllPostsByAuthorId, deletePosts } from '../../store/actions/root.action';
+import { getAllPostsByAuthorId, deletePosts, setIsAuthor } from '../../store/actions/root.action';
 import Preloader from '../../components/preloader/PreLoader';
 import stringToColor from '../../utils/stringToColor';
 import CreatePost from '../post/CreatePost';
@@ -49,8 +51,11 @@ class AuthorPage extends React.Component {
   state = {};
 
   componentDidMount() {
-    const { match, onGetAllPostsByAuthorId } = this.props;
+    const {
+      match, onGetAllPostsByAuthorId, onSetIsAuthor, currentUserId,
+    } = this.props;
     onGetAllPostsByAuthorId(match.params.id);
+    onSetIsAuthor(currentUserId === match.params.id);
   }
 
   handleExpandClick = () => {
@@ -78,17 +83,12 @@ class AuthorPage extends React.Component {
 
   handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
 
-  handleShowCreatePost = (currentUserId, currentAuthorId) => (currentUserId === currentAuthorId ? <CreatePost /> : null);
-
   render() {
-    const {
-      classes, match, userPosts, currentUserId,
-    } = this.props;
-    const currentAuthorId = match.params.id;
+    const { classes, userPosts, isAuthor } = this.props;
 
     return (
       <Card className={classes.card}>
-        {this.handleShowCreatePost(currentUserId, currentAuthorId)}
+        {isAuthor ? <CreatePost /> : null}
         {userPosts.length !== 0 ? (
           userPosts.map(post => (
             <div key={post.id}>
@@ -114,6 +114,19 @@ class AuthorPage extends React.Component {
                 </ListItem>
                 <ListItem>
                   <ListItemText primary={post.category_name} />
+                  {isAuthor ? (
+                    <Fragment>
+                      <IconButton aria-label="Edit" onClick={() => this.handleUpdatePost(post.id)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="Delete"
+                        onClick={() => this.handleDeletePost(post.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Fragment>
+                  ) : null}
                 </ListItem>
               </Paper>
             </div>
@@ -150,17 +163,21 @@ AuthorPage.propTypes = {
   ).isRequired,
   onGetAllPostsByAuthorId: PropTypes.func.isRequired,
   onDeletePosts: PropTypes.func.isRequired,
+  onSetIsAuthor: PropTypes.func.isRequired,
   currentUserId: PropTypes.string.isRequired,
+  isAuthor: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   currentUserId: state.currentUser.user.id,
   userPosts: state.allPosts.posts,
+  isAuthor: state.currentUser.isAuthor,
 });
 
 const mapDispatchToProps = {
   onGetAllPostsByAuthorId: getAllPostsByAuthorId,
   onDeletePosts: deletePosts,
+  onSetIsAuthor: setIsAuthor,
 };
 
 export default withStyles(styles)(

@@ -4,9 +4,15 @@ import {
   GET_USER_BY_TOKEN_START,
   GET_USER_BY_TOKEN_SUCCESS,
   GET_USER_BY_TOKEN_FAIL,
+  SET_IS_AUTHOR,
 } from './types';
 
 import { isLogined } from './root.action';
+
+export const setIsAuthor = flag => ({
+  type: SET_IS_AUTHOR,
+  flag,
+});
 
 export const getUserByTokenStart = () => ({
   type: GET_USER_BY_TOKEN_START,
