@@ -21,7 +21,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Comment from '../comment/Comment';
-import Preloader from '../../components/preloader/PreLoader';
 import { deleteComment, getPostById, getCommentsByPostId } from '../../store/actions/root.action';
 import stringToColor from '../../utils/stringToColor';
 
@@ -78,15 +77,11 @@ class CurrentPost extends React.Component {
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
-  handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
-
   render() {
-    const {
-      loaded, loading, classes, post, comments,
-    } = this.props;
+    const { classes, post, comments } = this.props;
     const { expanded } = this.state;
 
-    return loaded ? (
+    return (
       <Card className={classes.card}>
         <CardHeader
           avatar={(
@@ -148,8 +143,6 @@ class CurrentPost extends React.Component {
           </CardContent>
         </Collapse>
       </Card>
-    ) : (
-      this.handlePreloader(loading)
     );
   }
 }
@@ -183,13 +176,9 @@ CurrentPost.propTypes = {
   onDeleteComment: PropTypes.func.isRequired,
   onGetPostById: PropTypes.func.isRequired,
   onGetCommentsByPostId: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  loaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  loading: state.currentPost.loading,
-  loaded: state.currentPost.loaded,
   post: state.currentPost.post,
   comments: state.comments.comments,
 });

@@ -31,15 +31,11 @@ class Categories extends React.Component {
     onGetAllPostsByCategory(title);
   };
 
-  handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
-
   render() {
-    const {
-      loading, loaded, categories, classes,
-    } = this.props;
+    const { loading, categories, classes } = this.props;
     const { selectedIndex } = this.state;
 
-    return loaded ? (
+    return !loading ? (
       <div className={classes.root}>
         <List component="nav">
           {categories.map(category => (
@@ -55,7 +51,7 @@ class Categories extends React.Component {
         </List>
       </div>
     ) : (
-      this.handlePreloader(loading)
+      <Preloader />
     );
   }
 }
@@ -75,12 +71,10 @@ Categories.propTypes = {
     }),
   ).isRequired,
   loading: PropTypes.bool.isRequired,
-  loaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   loading: state.categories.loading,
-  loaded: state.categories.loaded,
   categories: state.categories.categories,
 });
 

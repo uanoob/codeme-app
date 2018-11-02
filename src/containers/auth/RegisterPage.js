@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { auth, setNameInputValid, setPasswordInputValid } from '../../store/actions/root.action';
 import checkValidity from '../../utils/validation.utils';
+import Preloader from '../../components/preloader/PreLoader';
 
 const styles = theme => ({
   typography: {
@@ -76,11 +77,13 @@ export class RegisterUserComponent extends Component {
   };
 
   render() {
-    const { classes, nameFieldValid, passwordFieldValid } = this.props;
+    const {
+      classes, nameFieldValid, passwordFieldValid, loading,
+    } = this.props;
 
     const { name, touchedName, touchedPassword } = this.state;
 
-    return (
+    return !loading ? (
       <div>
         <form
           className={classes.container}
@@ -120,6 +123,8 @@ export class RegisterUserComponent extends Component {
           </Button>
         </form>
       </div>
+    ) : (
+      <Preloader />
     );
   }
 }
@@ -139,11 +144,13 @@ RegisterUserComponent.propTypes = {
   onSetNameInputValid: PropTypes.func.isRequired,
   onSetPasswordInputValid: PropTypes.func.isRequired,
   tryRegistration: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   nameFieldValid: state.validation.isNameInputValid,
   passwordFieldValid: state.validation.isPasswordInputValid,
+  loading: state.auth.loading,
 });
 
 const mapDispatchToProps = {

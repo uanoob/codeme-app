@@ -4,10 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import PostTemplate from '../../components/postTemplate/PostTemplate';
-import Preloader from '../../components/preloader/PreLoader';
 import {
   getAllPosts,
   getPostById,
@@ -34,16 +31,6 @@ class Posts extends React.Component {
     const { onGetAllPosts } = this.props;
     onGetAllPosts();
   }
-
-  handlePreloader = loading => (loading ? (
-    <Preloader />
-  ) : (
-    <List component="nav">
-      <ListItem>
-        <ListItemText primary="No post here  :(" />
-      </ListItem>
-    </List>
-  ));
 
   handleColor = string => stringToColor(string);
 
@@ -76,12 +63,10 @@ class Posts extends React.Component {
   };
 
   render() {
-    const {
-      loading, loaded, posts, classes,
-    } = this.props;
+    const { posts, classes } = this.props;
     const { expanded } = this.state;
 
-    return loaded && posts.length !== 0 ? (
+    return (
       <div className={classes.root}>
         <List component="nav">
           {posts.map(post => (
@@ -107,8 +92,6 @@ class Posts extends React.Component {
           ))}
         </List>
       </div>
-    ) : (
-      this.handlePreloader(loading)
     );
   }
 }
@@ -132,13 +115,9 @@ Posts.propTypes = {
     }),
   ).isRequired,
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
-  loading: PropTypes.bool.isRequired,
-  loaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  loading: state.allPosts.loading,
-  loaded: state.allPosts.loaded,
   posts: state.allPosts.posts,
 });
 

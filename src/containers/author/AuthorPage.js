@@ -16,7 +16,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import Forward from '@material-ui/icons/Forward';
 import Paper from '@material-ui/core/Paper';
 import { getAllPostsByAuthorId, deletePosts, setIsAuthor } from '../../store/actions/root.action';
-import Preloader from '../../components/preloader/PreLoader';
 import stringToColor from '../../utils/stringToColor';
 import CreatePost from '../post/CreatePost';
 
@@ -84,8 +83,6 @@ class AuthorPage extends React.Component {
     const length = 70;
     return postBody.length > length ? `${postBody.substring(0, length - 3)}...` : postBody;
   };
-
-  handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
 
   render() {
     const {
@@ -178,6 +175,7 @@ const mapStateToProps = state => ({
   currentUserId: state.currentUser.user.id,
   userPosts: state.allPosts.posts,
   isAuthor: state.currentUser.isAuthor,
+  loading: state.allPosts.loading,
 });
 
 const mapDispatchToProps = {
