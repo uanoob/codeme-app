@@ -90,8 +90,8 @@ class Posts extends React.Component {
               id={post.id}
               title={post.title}
               body={post.body}
-              authorColor={this.handleColor(post.author_name)}
-              authorAvatar={this.handleAuthorAvatar(post.author_name)}
+              authorColor={this.handleColor(post.author_name || 'Anonymous')}
+              authorAvatar={this.handleAuthorAvatar(post.author_name || 'Anonymous')}
               authorId={post.author_id}
               authorName={post.author_name}
               categoryId={post.category_id}

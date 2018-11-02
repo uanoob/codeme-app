@@ -128,8 +128,12 @@ class CurrentPost extends React.Component {
             {comments.map(comment => (
               <ListItem key={comment.id}>
                 <ListItemAvatar>
-                  <Avatar style={{ backgroundColor: this.handleColor(comment.author_name) }}>
-                    {this.handleAuthorAvatar(comment.author_name)}
+                  <Avatar
+                    style={{
+                      backgroundColor: this.handleColor(comment.author_name || 'Anonymous'),
+                    }}
+                  >
+                    {this.handleAuthorAvatar(comment.author_name || 'Anonymous')}
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={comment.author_name} />

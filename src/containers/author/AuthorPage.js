@@ -66,9 +66,13 @@ class AuthorPage extends React.Component {
 
   handleAuthorAvatar = str => `${str.charAt(0)}${str.charAt(str.length - 1)}`.toUpperCase();
 
-  handlerDeletePost = (postId) => {
+  handleDeletePost = (postId, authorId) => {
     const { onDeletePosts } = this.props;
-    onDeletePosts(postId);
+    onDeletePosts(postId, authorId);
+  };
+
+  handleUpdatePost = (postId) => {
+    console.log(postId);
   };
 
   handleCurrentPost = (postId) => {
@@ -84,7 +88,9 @@ class AuthorPage extends React.Component {
   handlePreloader = loading => (loading ? <Preloader /> : <div>Sometime went wrong :(</div>);
 
   render() {
-    const { classes, userPosts, isAuthor } = this.props;
+    const {
+      classes, userPosts, currentUserId, isAuthor,
+    } = this.props;
 
     return (
       <Card className={classes.card}>
@@ -121,7 +127,7 @@ class AuthorPage extends React.Component {
                       </IconButton>
                       <IconButton
                         aria-label="Delete"
-                        onClick={() => this.handleDeletePost(post.id)}
+                        onClick={() => this.handleDeletePost(post.id, currentUserId)}
                       >
                         <DeleteIcon />
                       </IconButton>
